@@ -1,0 +1,26 @@
+/*
+Základní struktura CSS pravidla:
+selector {
+    CSS properties 
+    vlastnost-1: hodnota;
+    vlastnost-2: hodnota;
+    vlastnost-3: hodnota;
+    vlastnost-4: hodnota;
+}
+
+*/
+
+body {
+    background-color: #0c1a2b; /* Nastavení barvy pozadí pro celé tělo stránky */
+   /* background-color: #b6ff3b; /* Nastavení barvy pozadí pro celé tělo stránky */
+
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Nastavení fontu pro celý dokument */
+    color: #b6ff3b;
+    font-size: 20px; /* Nastavení velikosti písma pro všechny odstavce */
+    line-height: 1.6; /* Nastavení výšky řádku pro lepší čitelnost */
+    margin-bottom: 20px; /* Přidání mezery pod každý odstavec */
+}
+}
+p {
+    
+}
