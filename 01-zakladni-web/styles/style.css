@@ -16,11 +16,77 @@ body {
 
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Nastavení fontu pro celý dokument */
     color: #b6ff3b;
-    font-size: 20px; /* Nastavení velikosti písma pro všechny odstavce */
+    font-size: 30px; /* Nastavení velikosti písma pro všechny odstavce */
     line-height: 1.6; /* Nastavení výšky řádku pro lepší čitelnost */
     margin-bottom: 20px; /* Přidání mezery pod každý odstavec */
 }
+
+h1 {
+    color: #cbc700; /* Nastavení barvy pro nadpisy h1 */
+    font-size: 3em; /* Nastavení velikosti písma pro nadpisy h1 */
+    margin: unset; /* Přidání mezery pod nadpisy h1 */
 }
+
 p {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 26px; /* Nastavení velikosti písma pro*/
+}
+
+header, footer {
+    background-color: #1d2d40; /* Nastavení barvy pozadí pro hlavičku a patičku */
+    padding: 0.5rem; /* Přidání vnitřního odsazení */
+    padding: 1rem 5rem; /* Přidání vnitřního odsazení */
+    text-align: left; /* Zarovnání textu na střed */
+    border-radius: 50px;
+}
+
+footer p {
+    margin: unset; /* Odstranění výchozího odsazení pro odstavce v patičce */
+}
+
+.page-wrapper {
+    width: 85%; /* Nastavení šířky wrapperu */
+    margin: 0 auto; /* Zarovnání wrapperu na střed */
     
+}   
+
+.card {
+    background-color: #1b2838; /* Nastavení barvy pozadí pro karty */
+    padding: 1.5rem; /* Přidání vnitřního odsazení */
+    margin: 0.1rem ; /* Přidání vnějšího odsazení */
+    border-radius: 50px 80px ;
+    border: 5px solid /* Přidání rámečku kolem karty */
+}
+
+.grid-container {
+    display: grid; /* Nastavení zobrazení jako grid */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr )); /* SVATEJ GRÁL Vytvoření tří sloupců stejné šířky */
+    gap: 1rem; /* Přidání mezery mezi položkami gridu */
+
+}
+nav a {
+    display: block;
+    background-color: #1d2d40;
+    color: #b6ff3b; /* Nastavení barvy pro odkazy v navigaci */
+    text-decoration: line-through; /* Odstranění podtržení z odkazů */
+    margin: 1rem; /* Přidání mezery mezi odkazy */
+    padding: 0.5rem; /* Přidání vnitřního odsazení pro odkazy */
+    border-radius: 10px;
+    white-space: nowrap; /* Zabránění zalomení textu v odkazech */
+}
+nav ul {
+    list-style-type: none; /* Odstranění odrážek z nečíslovaných seznamů */
+    padding: 0; /* Odstranění vnitřního odsazení z nečíslovaných seznamů */
+    margin: 0; /* Odstranění vnějšího odsazení z nečíslovaných seznamů */
+    display: flex; /* Zobrazení položek seznamu jako flexbox */
+    gap: 2rem; /* Přidání mezery mezi položkami seznamu */
+    flex-wrap: wrap;
+}
+
+nav li {
+    flex-shrink:1; 
+    flex-grow: 1;
+    text-align: center;
+    flex-basis: 100px;
+    flex : 1 1 100px;
 }
