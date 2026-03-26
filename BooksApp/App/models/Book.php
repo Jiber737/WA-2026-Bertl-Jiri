@@ -1,36 +1,32 @@
 <?php
+// Soubor: App/models/Book.php
 
 require_once 'Database.php';
 
 class Book {
-    private $conn;
-    private $table_name = "books"; // Ujisti se, že se takto jmenuje tvá tabulka v DB
+    private $db;
 
     public function __construct() {
         $database = new Database();
-        $this->conn = $database->getConnection();
+        $this->db = $database->getConnection();
     }
 
-    // Metoda pro uložení nové knihy
-    public function create($data) {
-        $query = "INSERT INTO " . $this->table_name . " 
-                  (title, author, category, isbn, year, price, description) 
-                  VALUES (:title, :author, :category, :isbn, :year, :price, :description)";
-
-        $stmt = $this->conn->prepare($query);
-
-        // Vyčištění a nabindování dat
-        $stmt->bindParam(':title', $data['title']);
-        $stmt->bindParam(':author', $data['author']);
-        $stmt->bindParam(':category', $data['category']);
-        $stmt->bindParam(':isbn', $data['isbn']);
-        $stmt->bindParam(':year', $data['year']);
-        $stmt->bindParam(':price', $data['price']);
-        $stmt->bindParam(':description', $data['description']);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
+    public function insert($data) {
+        // SQL dotaz s parametry pro ochranu před SQL injection
+        $sql = "INSERT INTO books (title, author, category, isbn, year, price, description) 
+                VALUES (:title, :author, :category, :isbn, :year, :price, :description)";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        // Propojení dat z formuláře s SQL dotazem
+        return $stmt->execute([
+            ':title'       => $data['title'],
+            ':author'      => $data['author'],
+            ':category'    => $data['category'],
+            ':isbn'        => $data['isbn'],
+            ':year'        => $data['year'],
+            ':price'       => $data['price'],
+            ':description' => $data['description']
+        ]);
     }
 }

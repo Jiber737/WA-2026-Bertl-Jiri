@@ -12,8 +12,8 @@
 
         <nav>
             <ul>
-                <li><a href=" /BooksApp/public/index.php"> Seznam knih (Domů)<a/></li>
-                <li><a href=" /BooksApp/public/index.php?url=book/create"> Přidaat novou knihu<a/></li>
+                <li><a href="/BooksApp/public/index.php?url=book/index">Seznam knih (Domů)</a></li>
+                <li><a href="/BooksApp/public/index.php?url=book/create">Přidat novou knihu</a></li>
 
             </ul>
         </nav>

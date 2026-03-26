@@ -14,7 +14,7 @@
         <div>
             <!-- <form action="../../controllers/BookController.php" method="post" enctype="multipart/form-data"> !-->
             <form action="/BooksApp/public/index.php?url=book/store" method="post" enctype="multipart/form-data">
-                <div>
+                    <div>
                     <div>
                         <label for="title">název knihy<span>*</span></label>
                         <input type="text" name="title" id="title" required>
