@@ -1,27 +1,44 @@
 <?php
+// Soubor: BooksApp/App/controllers/BookController.php
 
 class BookController {
 
-    //metoda pro zobrazení uvodni stranky
+    // Zobrazení seznamu knih
     public function index() {
-        
-        //vlozi se pripraveny soubor html
-        require_once '../app/views/books/books_list.php';
-    }
+    require_once '../App/models/Book.php';
+    $bookModel = new Book();
+    
+    // Získání všech knih z DB
+    $books = $bookModel->getAll();
+    
+    // Načtení pohledu (proměnná $books v něm bude dostupná)
+    require_once '../App/views/books/books_list.php';
+}
 
-    // Zobrazení formuláře pro přidání knihy
+    // Metoda pro zobrazení formuláře
     public function create() {
-        require_once '../app/views/books/book_create.php';
+        require_once '../App/views/books/book_create.php';
     }
 
-    // Metoda, která zpracuje data z formuláře (POST)
+    // Metoda pro zpracování dat z formuláře
     public function store() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Načtení modelu
-            require_once '../app/models/Book.php';
-            $bookModel = new Book();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Načtení modelu - POZOR na velké "A" ve složce App
+        require_once '../App/models/Book.php';
+        $bookModel = new Book();
 
-            // Příprava dat z $_POST
+        // Zavolání metody v modelu (předáváme celý $_POST)
+        if ($bookModel->create($_POST)) {
+            // Pokud se povedlo, hodíme uživatele zpět na seznam
+            header('Location: index.php?url=book/index');
+            exit();
+        } else {
+            echo "Chyba: Nepodařilo se uložit knihu do databáze.";
+        }
+    }
+
+
+            // Sběr dat z POST
             $bookData = [
                 'title' => $_POST['title'],
                 'author' => $_POST['author'],
@@ -32,14 +49,13 @@ class BookController {
                 'description' => $_POST['description']
             ];
 
-            // Volání metody v modelu
+            // Volání metody create v modelu
             if ($bookModel->create($bookData)) {
-                // Po úspěšném uložení přesměrujeme na seznam
+                // Přesměrování zpět na seznam po úspěchu
                 header('Location: /BooksApp/public/index.php?url=book/index');
+                exit();
             } else {
-                echo "Chyba při ukládání knihy.";
+                echo "Chyba při ukládání knihy do databáze.";
             }
         }
     }
-}
-}
