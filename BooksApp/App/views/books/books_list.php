@@ -8,7 +8,7 @@
 
 <body>
     <header>
-        <h1> aplikace knihovna</h1>
+        <h1> Aplikace Knihovna</h1>
 
         <nav>
             <ul>
