@@ -16,20 +16,20 @@ body {
 
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Nastavení fontu pro celý dokument */
     color: #b6ff3b;
-    font-size: 30px; /* Nastavení velikosti písma pro všechny odstavce */
+    font-size: 20px; /* Nastavení velikosti písma pro všechny odstavce */
     line-height: 1.6; /* Nastavení výšky řádku pro lepší čitelnost */
     margin-bottom: 20px; /* Přidání mezery pod každý odstavec */
 }
 
 h1 {
     color: #cbc700; /* Nastavení barvy pro nadpisy h1 */
-    font-size: 3em; /* Nastavení velikosti písma pro nadpisy h1 */
+    font-size: 2em; /* Nastavení velikosti písma pro nadpisy h1 */
     margin: unset; /* Přidání mezery pod nadpisy h1 */
 }
 
 p {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 26px; /* Nastavení velikosti písma pro*/
+    font-size: 13px; /* Nastavení velikosti písma pro*/
 }
 
 header, footer {
@@ -37,7 +37,8 @@ header, footer {
     padding: 0.5rem; /* Přidání vnitřního odsazení */
     padding: 1rem 5rem; /* Přidání vnitřního odsazení */
     text-align: left; /* Zarovnání textu na střed */
-    border-radius: 50px;
+    border-radius: 20px;
+    font-size: 25px;
 }
 
 footer p {
@@ -55,7 +56,7 @@ footer p {
     padding: 1.5rem; /* Přidání vnitřního odsazení */
     margin: 0.1rem ; /* Přidání vnějšího odsazení */
     border-radius: 50px 80px ;
-    border: 5px solid /* Přidání rámečku kolem karty */
+    border: 3px solid /* Přidání rámečku kolem karty */
 }
 
 .grid-container {

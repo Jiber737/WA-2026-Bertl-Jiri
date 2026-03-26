@@ -3,41 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
+    <!--<link rel="stylesheet" href="styles/style.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <title>Web 01 Jiří Bertl</title>
+     <style type="text/tailwindcss">
+      @theme {
+        --color-clifford: #1d2d40;
+      }
+
+      @layer base {
+        h2{
+            @apply text-2xl bg-emerald-300 mt-1
+        }
+        p{
+            @apply text-sm font-serif mt-2
+        }
+        .card{
+            @apply bg-emerald-300 p-2 rounded-2xl mt-3
+        }
+        nav a{
+            @apply 
+            block
+            bg-emerald-300
+            text-emerald-800
+            rounded-xs
+            py-2
+            px-4
+            text-center
+            whitespace-nowrap
+            hover:bg-emerald-400
+        }
+        nav li{
+            @apply flex-grow basis-full
+        }
+      }
+    </style>
 
 </head>
-<body>
-    <div class="page-wrapper">
-        <header>
-            <h1>Webb 01 </h1>
+<body class="bg-emerald-200 text-teal-900">
+    <div class="page-wrapper w-[95%] mx-auto lg:w-[80%]">
+        <header class="bg-clifford text-emerald-400 p-3 py-3 rounded-xs">
+            <h1 class="text-4xl">Webb 01 </h1>
         </header>
-        <nav> <!-- navigace lze rozkliknout -->
-            <ul>
+        <nav class=""> <!-- navigace lze rozkliknout -->
+            <ul class="flex gap-3">
                 <li>
                     <a href="#">Domů</a> </li> <!-- jiná sekce webu --> 
                     <li><a href="#">O nás</a> </li> <!-- jiná sekce webu --> 
-                    <li><a href="#">Kontakt</a> </li> <!-- jiná sekce webu --> 
+                    <li><a href="https://futurflix.webnode.cz/kontakt/">Kontakt</a> </li> <!-- jiná sekce webu --> 
                     <li><a href="https://www.youtube.com/@jiber73">Futurflix</a> 
                 </li>                
             </ul>
         </nav>
             <main>
-            <section class="grid-container"> <!-- grid-container pro rozvržení obsahu do mřížky -->
+            <section class="grid-container grid gap-1 grid-cols-[repeat(auto-fit, minmax(250px, 1fr))]"> <!-- grid-container pro rozvržení obsahu do mřížky -->
                 <article class="card"> <!-- card pro stylizaci jednotlivých částí obsahu -->
                     <h2>úvod 1
                     </h2>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta nam voluptate excepturi? Autem voluptas ex provident, nesciunt veniam aspernatur fuga porro optio maiores delectus odio ipsum saepe. Asperiores, inventore iure.
-                    </p>
+                        Me gusta aprender cosas nuevas y descubrir cómo funcionan. Me interesan la tecnología, los proyectos creativos y las ideas que pueden convertirse en algo real. Intento mejorar cada día y hacer las cosas con calma y disciplina.                    </p>
                 </article>
 
                 <article class="card"> <!-- card pro stylizaci jednotlivých částí obsahu -->
                     <h2>úvod 2
                     </h2>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta nam voluptate excepturi? Autem voluptas ex provident, nesciunt veniam aspernatur fuga porro optio maiores delectus odio ipsum saepe. Asperiores, inventore iure.
-                    </p>
+                        Creo que la vida pasa muy rápido, por eso intento guardar recuerdos importantes. Me gustan los momentos tranquilos, las conversaciones profundas y las pequeñas cosas que normalmente pasan desapercibidas.                    </p>
                 </article>
 
 
@@ -76,7 +108,7 @@
 
             </section>
             </main>
-        <footer>
+        <footer class="bg-emerald-500 px-4 py-3 text-center rounded-4xl">
             <p>&copy; 2026&nbsp; Jiří Bertl</p> <!-- copyright a pevná mezera autorská práva a informace o autorovi -->
         </footer>
     </div>
