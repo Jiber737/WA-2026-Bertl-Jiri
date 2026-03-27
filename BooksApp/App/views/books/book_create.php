@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div>
         <div>
@@ -12,7 +13,7 @@
             <p>vyplňte údaje a uložte knihu do databaze</p>
         </div>
         <div>
-            <form action="index.php?url=book/store" method="post" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/index.php?url=book/store" method="post" enctype="multipart/form-data">
                     <div>
                         <label for="title">název knihy<span>*</span></label>
                         <input type="text" name="title" id="title" required>
@@ -84,6 +85,72 @@
                 </div>
             </form>
         </div>
+    </div>
+</body>
+</html>
+
+<!--<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/WA-2026-Bertl-Jiri/01-zakladni-web/styles/style.css">
+    <title>Přidat knihu</title>
+    <style>
+        form div { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #cbc700; }
+        input, textarea { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #1d2d40; background: #0c1a2b; color: #b6ff3b; }
+        button { background-color: #cbc700; color: #0c1a2b; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 18px; }
+        button:hover { background-color: #b6ff3b; }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header>
+            <h1>Nová kniha</h1>
+            <nav>
+                <ul>
+                    <form action="<?= BASE_URL ?>/index.php?url=book/store" method="post" enctype="multipart/form-data">
+                </ul>
+            </nav>
+        </header>
+
+        <main style="display: flex; justify-content: center; margin-top: 2rem;">
+            <article class="card" style="width: 100%; max-width: 600px;">
+                <h2>Údaje o knize</h2>
+                <form action="index.php?url=book/store" method="post">
+                    <div>
+                        <label for="title">Název knihy*</label>
+                        <input type="text" name="title" id="title" required>
+                    </div>
+                    <div>
+                        <label for="author">Autor*</label>
+                        <input type="text" name="author" id="author" required>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label for="year">Rok vydání*</label>
+                            <input type="number" name="year" id="year" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="price">Cena (Kč)</label>
+                            <input type="number" name="price" id="price" step="0.5">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="isbn">ISBN*</label>
+                        <input type="text" name="isbn" id="isbn" required>
+                    </div>
+                    <div>
+                        <label for="description">Popis</label>
+                        <textarea name="description" id="description" rows="4"></textarea>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit">Uložit do knihovny</button>
+                    </div>
+                </form>
+            </article>
+        </main>
     </div>
 </body>
 </html>

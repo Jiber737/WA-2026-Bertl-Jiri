@@ -12,8 +12,8 @@
 
         <nav>
             <ul>
-                <li><a href="index.php?url=book/index">Seznam knih (Domů)</a></li>
-                <li><a href="index.php?url=book/create">Přidat novou knihu</a></li>
+                <li><a href="<?= BASE_URL ?>/index.php">Seznam knih (Domů)</a></li>
+                <li><a href="<?= BASE_URL ?>/index.php?url=book/create">Přidat novou knihu</a></li>
 
             </ul>
         </nav>
@@ -21,8 +21,6 @@
 
 
 <main>
-    <h2>Dostupné knihy</h2>
-    <p>zde se brzy objeví seznam z databáze</p>
 
     <h2>Dostupné knihy</h2>
     <?php if (!empty($books)): ?>
@@ -31,7 +29,7 @@
                 <li>
                     <strong><?php echo htmlspecialchars($book['title']); ?></strong> 
                     (<?php echo htmlspecialchars($book['author']); ?>) - 
-                    <?php echo htmlspecialchars($book['year']); ?>
+                    <?php echo htmlspecialchars($book['price'], 2); ?> Kč
                 </li>
             <?php endforeach; ?>
         </ul>
