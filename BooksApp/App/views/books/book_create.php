@@ -1,9 +1,112 @@
 <!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIB 2026 | Nový záznam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="form-page">
+    <div class="background-glow"></div>
+
+    <header>
+        <div class="header-content">
+            <h1><span>LIB</span> 2026</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.php" class="nav-link">← Zpět na seznam</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="glass-container form-container">
+            <div class="form-header">
+                <h2>Nový záznam</h2>
+                <p>Vložte parametry knihy do centrální databáze</p>
+            </div>
+
+            <form action="index.php?url=book/store" method="post" enctype="multipart/form-data" class="cyber-form">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="title">Název knihy<span>*</span></label>
+                        <input type="text" name="title" id="title" placeholder="Např. Digitální pevnost" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="author">Autor<span>*</span></label>
+                        <input type="text" name="author" id="author" placeholder="Příjmení a jméno" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="isbn">ISBN<span>*</span></label>
+                        <input type="text" name="isbn" id="isbn" placeholder="000-000-000-000" required>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="year">Rok vydání<span>*</span></label>
+                            <input type="number" name="year" id="year" placeholder="2026" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="price">Cena (Kč)</label>
+                            <input type="number" name="price" id="price" step="0.1" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="category">Kategorie</label>
+                            <input type="text" name="category" id="category">
+                        </div>
+                        <div class="input-group">
+                            <label for="subcategory">Podkategorie</label>
+                            <input type="text" name="subcategory" id="subcategory">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="description">Popis knihy</label>
+                        <textarea name="description" id="description" rows="4" placeholder="Stručný obsah knihy..."></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="file-label">
+                            <span class="label-text">Obrázek obálky</span>
+                            <div class="file-drop-zone">
+                                <span class="icon">📁</span>
+                                <span class="text-gray">Klikněte pro nahrání souborů (JPG/PNG)</span>
+                                <input type="file" id="images" name="images[]" multiple accept="image/*">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Inicializovat uložení</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; WA 2026 | Core System v3.0</p>
+    </footer>
+</body>
+</html>
+
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -53,11 +156,7 @@
 
                     </div>
 
-                    <div>
-                        <label for="subcategory">Podkategorie</label>
-                        <input type="text" name="subcategory" id="subcategory" required>
-
-                    </div>
+                  
 
                     <div>
                         <label for="link">Odkaz</label>
@@ -89,68 +188,3 @@
 </body>
 </html>
 
-<!--<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/WA-2026-Bertl-Jiri/01-zakladni-web/styles/style.css">
-    <title>Přidat knihu</title>
-    <style>
-        form div { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #cbc700; }
-        input, textarea { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #1d2d40; background: #0c1a2b; color: #b6ff3b; }
-        button { background-color: #cbc700; color: #0c1a2b; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 18px; }
-        button:hover { background-color: #b6ff3b; }
-    </style>
-</head>
-<body>
-    <div class="page-wrapper">
-        <header>
-            <h1>Nová kniha</h1>
-            <nav>
-                <ul>
-                    <form action="<?= BASE_URL ?>/index.php?url=book/store" method="post" enctype="multipart/form-data">
-                </ul>
-            </nav>
-        </header>
-
-        <main style="display: flex; justify-content: center; margin-top: 2rem;">
-            <article class="card" style="width: 100%; max-width: 600px;">
-                <h2>Údaje o knize</h2>
-                <form action="index.php?url=book/store" method="post">
-                    <div>
-                        <label for="title">Název knihy*</label>
-                        <input type="text" name="title" id="title" required>
-                    </div>
-                    <div>
-                        <label for="author">Autor*</label>
-                        <input type="text" name="author" id="author" required>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <div style="flex: 1;">
-                            <label for="year">Rok vydání*</label>
-                            <input type="number" name="year" id="year" required>
-                        </div>
-                        <div style="flex: 1;">
-                            <label for="price">Cena (Kč)</label>
-                            <input type="number" name="price" id="price" step="0.5">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="isbn">ISBN*</label>
-                        <input type="text" name="isbn" id="isbn" required>
-                    </div>
-                    <div>
-                        <label for="description">Popis</label>
-                        <textarea name="description" id="description" rows="4"></textarea>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button type="submit">Uložit do knihovny</button>
-                    </div>
-                </form>
-            </article>
-        </main>
-    </div>
-</body>
-</html>

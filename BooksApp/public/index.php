@@ -1,5 +1,6 @@
 <?php   
 
+session_start();
 
 //pro ucely ladeni na lokalnim serveru xampp
 //kompletni zobrazovani chby
@@ -11,7 +12,7 @@ error_reporting(E_ALL);
 // Vypočítá absolutní cestu ke složce, ve které běží tento index.php
 $baseDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 define('BASE_URL', $baseDir);
-echo($baseDir);
+//echo($baseDir);
 
 // Základní nastavení pro autoloading tříd postará se o ypracování URL
 require_once '../core/App.php';
