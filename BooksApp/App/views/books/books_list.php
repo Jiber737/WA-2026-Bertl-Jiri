@@ -13,11 +13,13 @@
     
     <header>
         <div class="header-content">
-            <h1><span>LIB</span> RARY</h1>
+            <h1><span>LIB</span> 2026</h1>
             <nav>
                 <ul>
                     <li><a href="index.php" class="nav-link">Domů</a></li>
                     <li><a href="index.php?url=book/create" class="nav-link add-btn">＋ Nová kniha</a></li>
+                    <li><a href="" class="nav-link add-btn">Registrace</a></li>
+
                 </ul>
             </nav>
         </div>
@@ -51,6 +53,16 @@
                 unset($_SESSION['messages']); 
             ?>
         <?php endif; ?>
+
+        <div class="glass-container" style="margin-bottom: 30px; padding: 25px;">
+            <h2 style="border-left: none; padding-left: 0; margin-bottom: 15px;">Vítejte v Knihovně LIB 2026</h2>
+                 <p style="color: #a0aec0; line-height: 1.6; font-size: 0.95rem;">
+                    Tento řídící modul slouží k centralizované správě a evidenci knižního fondu. 
+                    Můžete zde prohlížet indexované tituly, bezpečně ukládat nové záznamy do databáze, 
+                     nebo spravovat stávající informace. Pro inicializaci nového záznamu využijte tlačítko <strong style="color: var(--primary);">＋ Nová kniha</strong> v navigačním panelu.
+                 </p>
+        </div>
+
         <div class="glass-container">
             
             <h2>Dostupné záznamy</h2>
@@ -92,9 +104,8 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; WA 2026 | Core System v3.0</p>
-    </footer>
+        <?php require_once '../App/views/layout/footer.php'; ?>
+
 </body>
 </html>
 

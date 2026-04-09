@@ -80,7 +80,7 @@ class Book {
             ':isbn' => $isbn,
             ':description' => $description,
             ':link' => $link,
-            ':images' => json_encode($images)
+            ':images'      => $data['images']
         ]);
     }
 
