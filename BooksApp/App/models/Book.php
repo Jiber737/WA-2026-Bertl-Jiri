@@ -12,43 +12,40 @@ class Book {
     }
 
     public function getAll() {
-    $sql = "SELECT * FROM books ORDER BY id DESC";
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $sql = "SELECT * FROM books ORDER BY id DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    // 1. OPRAVA V CREATE: Přidáno subcategory a images do SQL i pole
     public function create($data) {
-        // SQL dotaz pro vložení dat
-        $sql = "INSERT INTO books (title, author, category, isbn, year, price, description) 
-                VALUES (:title, :author, :category, :isbn, :year, :price, :description)";
+        $sql = "INSERT INTO books (title, author, category, subcategory, isbn, year, price, description, images) 
+                VALUES (:title, :author, :category, :subcategory, :isbn, :year, :price, :description, :images)";
         
         $stmt = $this->db->prepare($sql);
         
-        // Mapování dat z formuláře na parametry dotazu
         return $stmt->execute([
             ':title'       => $data['title'],
             ':author'      => $data['author'],
             ':category'    => $data['category'],
+            ':subcategory' => $data['subcategory'] ?? null,
             ':isbn'        => $data['isbn'],
             ':year'        => $data['year'],
             ':price'       => $data['price'],
-            ':description' => $data['description']
+            ':description' => $data['description'],
+            ':images'      => $data['images'] // Tady předáváme náš JSON s názvy obrázků
         ]);
     }
 
-        // Získání jedné konkrétní knihy podle jejího ID
     public function getById($id) {
         $sql = "SELECT * FROM books WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
-        
-        // Používá se fetch() místo fetchAll(), protože očekáváme maximálně jeden výsledek.
-        // Vrátí asociativní pole s daty knihy, nebo false, pokud kniha neexistuje.
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Aktualizace existující knihy
+    // 2. OPRAVA V UPDATE: Opravena proměnná u images
     public function update(
         $id, $title, $author, $category, $subcategory, 
         $year, $price, $isbn, $description, $link, $images = []
@@ -68,7 +65,6 @@ class Book {
                 
         $stmt = $this->db->prepare($sql);
 
-        // Parametrů je stejné množství jako u create, navíc je pouze :id
         return $stmt->execute([
             ':id' => $id,
             ':title' => $title,
@@ -80,17 +76,13 @@ class Book {
             ':isbn' => $isbn,
             ':description' => $description,
             ':link' => $link,
-            ':images'      => $data['images']
+            ':images' => json_encode($images) // TADY BYL CHYBNÝ ZÁPIS $data['images']
         ]);
     }
 
-        // Trvalé smazání knihy z databáze
     public function delete($id) {
         $sql = "DELETE FROM books WHERE id = :id";
         $stmt = $this->db->prepare($sql);
-        
-        // Vrací true při úspěchu, false při chybě
         return $stmt->execute([':id' => $id]);
     }
-    
 }
