@@ -174,6 +174,9 @@ class BookController {
         $bookModel = new Book($db);
         $book = $bookModel->getById($id); // Proměnná $book nyní obsahuje asociativní pole dat
 
+
+        $uploadedImages = $this->processImageUploads();
+
         // Bezpečnostní kontrola: Zda kniha s daným ID vůbec existuje
         if (!$book) {
             // Pokud knihu někdo mezitím smazal, nebo uživatel zadal do URL neexistující ID

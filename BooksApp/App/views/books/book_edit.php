@@ -82,6 +82,36 @@
                 </div>
             </form>
         </div>
+
+         <script>
+            // Najdeme naše HTML prvky podle ID
+            const fileInput = document.getElementById('images');
+            const fileTitle = document.getElementById('file-title');
+            const fileInfo = document.getElementById('file-info');
+
+            // Posloucháme událost 'change' (změna hodnoty v inputu)
+            fileInput.addEventListener('change', function(event) {
+                const files = event.target.files;
+                
+                if (files.length === 0) {
+                    // Uživatel výběr zrušil
+                    fileTitle.textContent = 'Klikněte pro výběr souborů';
+                    fileTitle.className = 'text-sm text-slate-400 font-semibold';
+                    fileInfo.textContent = 'Žádné soubory nebyly vybrány';
+                } else if (files.length === 1) {
+                    // Vybrán 1 soubor - ukážeme jeho název
+                    fileTitle.textContent = 'Soubor připraven';
+                    fileTitle.className = 'text-sm text-blue-400 font-bold';
+                    fileInfo.textContent = files[0].name;
+                } else {
+                    // Vybráno více souborů - ukážeme počet
+                    fileTitle.textContent = 'Soubory připraveny';
+                    fileTitle.className = 'text-sm text-blue-400 font-bold';
+                    fileInfo.textContent = 'Vybráno celkem: ' + files.length + ' souborů';
+                }
+            });
+        </script>
+
     </main>
 
         <?php require_once '../App/views/layout/header.php'; ?>
