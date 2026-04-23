@@ -76,12 +76,59 @@
                         <input type="text" id="link" name="link" value="<?= htmlspecialchars($book['link']) ?>">
                     </div>
 
+                    <div class="input-group">
+    <label>Správa obrázků</label>
+    
+    <?php 
+    // Dekódování stávajících obrázků
+    $currentImages = json_decode($book['images'], true) ?: []; 
+    ?>
+
+    <?php if (!empty($currentImages)): ?>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+            <?php foreach ($currentImages as $img): ?>
+                <div style="text-align: center; width: 120px;">
+                    <img src="<?= BASE_URL ?>/uploads/<?= htmlspecialchars($img) ?>" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px; display: block; margin-bottom: 5px;">
+                    <label style="font-size: 10px; cursor: pointer;">
+                        <input type="checkbox" name="keep_images[]" value="<?= htmlspecialchars($img) ?>" checked> Ponechat
+                    </label>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <p style="font-size: 0.8rem; color: #8892b0; margin-bottom: 20px;">* Pro smazání obrázku zrušte zaškrtnutí u daného náhledu.</p>
+    <?php endif; ?>
+
+    <label class="file-label">
+        <span class="label-text">Přidat další obrázky</span>
+        <div class="file-drop-zone">
+            <span class="icon">📁</span>
+            <span id="file-info" class="text-gray">Klikněte pro nahrání dalších souborů</span>
+            <input type="file" id="images" name="images[]" multiple accept="image/*">
+        </div>
+    </label>
+</div>
+
+<script>
+    // JavaScript pro vizuální odezvu výběru souborů (stejný jako v create)
+    const fileInput = document.getElementById('images');
+    const fileInfo = document.getElementById('file-info');
+
+    fileInput.addEventListener('change', function(e) {
+        const files = e.target.files;
+        if (files.length > 0) {
+            fileInfo.innerHTML = '<strong style="color: var(--primary);">Vybráno k nahrání:</strong> ' + files.length + ' souborů';
+        }
+    });
+</script>
+
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Aktualizovat databázi</button>
                     </div>
                 </div>
             </form>
         </div>
+
+        
 
          <script>
             // Najdeme naše HTML prvky podle ID

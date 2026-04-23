@@ -76,17 +76,7 @@
                     </div>
 
                     <div class="md:col-span-2">
-    <label class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Obrázky knihy</label>
-    <div class="w-full">
-        <label for="images" class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-800/30 hover:bg-slate-700/50 hover:border-blue-400 transition-colors">
-            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                <span id="file-title" class="text-sm text-slate-400 font-semibold">Klikni pro výběr souborů</span>
-                <span id="file-info" class="text-xs text-slate-500 mt-1 text-center px-4">Žádné soubory nebyly vybrány</span>
-            </div>
-            <input type="file" id="images" name="images[]" multiple accept="image/*" class="hidden">
-        </label>
-    </div>
-</div>
+   
 
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Inicializovat uložení</button>

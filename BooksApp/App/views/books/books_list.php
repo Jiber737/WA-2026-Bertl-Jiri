@@ -81,9 +81,12 @@
                         </div>
 
                         <div style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                            <a href="index.php?url=book/show/<?= $book['id']; ?>" class="submit-btn" style="margin-top: 0; padding: 10px; text-align: center; flex: 2; font-size: 0.85rem;">Detail</a>
-                            <a href="index.php?url=book/edit/<?= $book['id']; ?>" class="submit-btn" style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,255,255,0.2); color: #a0aec0; background: transparent;" title="Upravit">✎</a>
-                        </div>
+    <a href="index.php?url=book/show/<?= $book['id']; ?>" class="submit-btn" style="margin-top: 0; padding: 10px; text-align: center; flex: 2; font-size: 0.85rem;">Detail</a>
+    
+    <a href="index.php?url=book/edit/<?= $book['id']; ?>" class="submit-btn" style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,255,255,0.2); color: #a0aec0; background: transparent;" title="Upravit">✎</a>
+    
+    <a href="index.php?url=book/delete/<?= $book['id']; ?>" class="submit-btn btn-delete" style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,75,75,0.4); color: #ff4b4b; background: transparent;" title="Smazat" onclick="return confirm('Opravdu chcete tento záznam smazat?')">✖</a>
+</div>
                         
                     </div>
                 <?php endforeach; ?>

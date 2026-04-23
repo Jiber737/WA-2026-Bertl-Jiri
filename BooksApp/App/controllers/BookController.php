@@ -55,12 +55,71 @@ class BookController {
 
     // Metoda pro zobrazení formuláře
     public function create() {
+        if (!isset($_SESSION['user_id'])) {
+        $this->addErrorMessage('Pro přidání knihy se musíte nejprve přihlásit.');
+        header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+        exit;
+    }
         require_once '../App/views/books/book_create.php';
     }
 
     // Metoda pro zpracování dat z formuláře
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+             // !!! ZMĚNA: ZDE PŘIDÁME KONTROLU PŘIHLÁŠENÍ ---
+            if (!isset($_SESSION['user_id'])) {
+                $this->addErrorMessage('Pro uložení knihy musíte být přihlášeni.');
+                header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+                exit;
+            }
+            $userId = $_SESSION['user_id'];
+            // ---------------------------------------
+
+            // 1. Získání a očištění textových dat
+            $title = htmlspecialchars($_POST['title'] ?? '');
+            $author = htmlspecialchars($_POST['author'] ?? '');
+            $isbn = htmlspecialchars($_POST['isbn'] ?? '');
+            $category = htmlspecialchars($_POST['category'] ?? '');
+            $subcategory = htmlspecialchars($_POST['subcategory'] ?? '');
+            $year = (int)($_POST['year'] ?? 0);
+            $price = (float)($_POST['price'] ?? 0);
+            $link = htmlspecialchars($_POST['link'] ?? '');
+            $description = htmlspecialchars($_POST['description'] ?? '');
+
+            // Zpracování nahraných souborů
+            $uploadedImages = $this->processImageUploads();
+
+            // 2. Komunikace s databází a modelem
+            require_once '../app/models/Database.php';
+            require_once '../app/models/Book.php';
+
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $bookModel = new Book($db);
+            
+            // !!! ZMĚNA: ZDE PŘIDÁME $userId jako poslední argument volání metody
+            $isSaved = $bookModel->create(
+                $title, $author, $category, $subcategory, 
+                $year, $price, $isbn, $description, $link, $uploadedImages,
+                $userId // PŘEDÁVÁME ID UŽIVATELE
+            );
+
+            // 3. Vyhodnocení výsledku a přesměrování
+            if ($isSaved) {
+                $this->addSuccessMessage('Kniha byla úspěšně uložena.');
+                header('Location: ' . BASE_URL . '/index.php');
+                exit;
+            } else {
+                $this->addErrorMessage('Nepodařilo se uložit knihu do databáze.');
+            }
+            
+        } 
+        
+        else {
+            $this->addNoticeMessage('Pro přidání knihy je nutné odeslat formulář.');
+
             require_once '../App/models/Book.php';
             $bookModel = new Book();
 
@@ -122,6 +181,14 @@ class BookController {
             // 3. Smazání existující knihy
     public function delete($id = null) {
         // Kontrola, zda bylo v URL předáno ID
+
+        if (!isset($_SESSION['user_id'])) //jestli je uzivatel prihlasen zkouma pomoci superglobalni promenne
+            {
+        $this->addErrorMessage('Pro smazání knihy se musíte nejprve přihlásit.');
+        header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+        exit;
+    }
+
         if (!$id) {
             $this->addErrorMessage('Nebylo zadáno ID knihy ke smazání.');
             header('Location: ' . BASE_URL . '/index.php');
@@ -156,6 +223,13 @@ class BookController {
         // 4. Zobrazení formuláře pro úpravu existující knihy
     public function edit($id = null) {
         // Kontrola, zda bylo v URL vůbec předáno nějaké ID
+
+        if (!isset($_SESSION['user_id'])) {
+        $this->addErrorMessage('Pro přidání knihy se musíte nejprve přihlásit.');
+        header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+        exit;
+        }
+
         if (!$id) {
             // Vyvolání červené notifikace pro kritickou chybu
             $this->addErrorMessage('Nebylo zadáno ID knihy k úpravě.');
@@ -215,12 +289,16 @@ class BookController {
             $link = htmlspecialchars($_POST['link'] ?? '');
             $description = htmlspecialchars($_POST['description'] ?? '');
 
-            // Prozatímní zástupce pro obrázky
-            //$uploadedImages = []; 
+            // --- NOVÁ LOGIKA PRO SPRÁVU OBRÁZKŮ ---
+            // 1. Získání obrázků, které chceme PONECHAT (ty, které zůstaly zaškrtnuté)
+            $keepImages = $_POST['keep_images'] ?? [];
 
-             // ZDE JE ZMĚNA: Zavolání metody, která zpracuje soubory v $_FILES
-            // Vrátí nám hezké pole s novými názvy (např. ['book_123.jpg', 'book_456.png'])
-            $uploadedImages = $this->processImageUploads(); 
+            // 2. Zpracování případných NOVÝCH obrázků (pokud uživatel nějaké nahrál)
+            $newUploads = $this->processImageUploads(); 
+
+            // 3. Sloučení obou polí do jednoho finálního seznamu (staré ponechané + zbrusu nové)
+            $finalImages = array_merge($keepImages, $newUploads);
+            // --------------------------------------
 
             // 2. Komunikace s databází a modelem
             require_once '../app/models/Database.php';
@@ -233,7 +311,7 @@ class BookController {
             $bookModel = new Book($db);
             $isUpdated = $bookModel->update(
                 $id, $title, $author, $category, $subcategory, 
-                $year, $price, $isbn, $description, $link, $uploadedImages
+                $year, $price, $isbn, $description, $link, $finalImages // Tady posíláme náš sloučený seznam
             );
 
             // 4. Vyhodnocení výsledku a přesměrování
