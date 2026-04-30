@@ -100,4 +100,11 @@ class Book {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':id' => $id]);
     }
+
+    public function getAllCategories() {
+    $sql = "SELECT id, name FROM categories ORDER BY name ASC";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

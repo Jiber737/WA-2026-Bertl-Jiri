@@ -36,3 +36,21 @@
         </nav>
     </div>
 </header>
+<?php if (isset($_SESSION['messages']) && !empty($_SESSION['messages'])): ?>
+    <div class="notifications-container" style="max-width: 1100px; margin: 20px auto 0 auto; padding: 0 20px;">
+        <?php foreach ($_SESSION['messages'] as $type => $messages): ?>
+            <?php 
+                $color = 'black';
+                if ($type === 'success') $color = 'var(--primary)';
+                if ($type === 'error') $color = '#ff4b4b';
+                if ($type === 'notice') $color = 'orange';
+            ?>
+            <?php foreach ($messages as $message): ?>
+                <div style="color: <?= $color ?>; border: 1px solid <?= $color ?>; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);">
+                    <strong><?= htmlspecialchars($message) ?></strong>
+                </div>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION['messages']); // Vymazání zprávy po zobrazení ?>
+<?php endif; ?>
