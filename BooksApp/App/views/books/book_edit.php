@@ -56,9 +56,16 @@
                     </div>
 
                     <div class="input-row">
-                        <div class="input-group">
-                            <label for="category">Sektor (Kategorie)</label>
-                            <input type="text" id="category" name="category" value="<?= htmlspecialchars($book['category']) ?>">
+                        <div class="form-group">
+                            <label for="category">Kategorie *</label>
+                            <select id="category" name="category" required>
+                                <?php foreach ($categories as $cat): ?>
+                                    <option value="<?= htmlspecialchars($cat['name']) ?>" 
+                                        <?php if ($cat['name'] == $book['category']) echo 'selected'; ?>>
+                                        <?= htmlspecialchars($cat['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="input-group">
                             <label for="subcategory">Sub-sektor</label>

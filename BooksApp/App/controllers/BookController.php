@@ -267,13 +267,17 @@ class BookController {
         // Načtení potřebných tříd a spojení s databází
         require_once '../app/models/Database.php';
         require_once '../app/models/Book.php';
-                require_once '../app/models/Category.php';
+        require_once '../app/models/Category.php';
 
 
         
-        // ZMĚNA: Získání seznamu kategorií
-        $categoryModel = new Category($db);
+        $categoryModel = new Category($this->db); 
         $categories = $categoryModel->getAllCategories();
+
+        $this->render('books/book_edit', [
+         'book' => $book,
+         'categories' => $categories
+        ]);
 
         $database = new Database();
         $db = $database->getConnection();
