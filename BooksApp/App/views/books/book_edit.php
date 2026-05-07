@@ -56,15 +56,22 @@
                     </div>
 
                     <div class="input-row">
-                        <div class="form-group">
+                        <div>
                             <label for="category">Kategorie *</label>
                             <select id="category" name="category" required>
+                                <option value="">-- Vyberte kategorii --</option>
+                                
                                 <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= htmlspecialchars($cat['name']) ?>" 
-                                        <?php if ($cat['name'] == $book['category']) echo 'selected'; ?>>
+                                    <?php 
+                                    // Zkontrolujeme, zda ID aktuálně vykreslované kategorie odpovídá ID kategorie, kterou má kniha uloženou
+                                    $isSelected = ($book['category'] == $cat['id']) ? 'selected' : ''; 
+                                    ?>
+                                    
+                                    <option value="<?= htmlspecialchars($cat['id']) ?>" <?= $isSelected ?>>
                                         <?= htmlspecialchars($cat['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
+                                
                             </select>
                         </div>
                         <div class="input-group">

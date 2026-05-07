@@ -1,0 +1,47 @@
+<?php
+
+class App {
+    // Výchozí nastavení pro Futurflix - hledá HomeController.php
+    protected $controller = 'HomeController';
+    protected $method = 'index'; 
+    protected $params = [];
+
+    public function __construct() {
+        // Získání a rozsekání URL adresy na jednotlivá slova
+        $url = $this->parseUrl();
+
+        // 1. KONTROLER: Existuje pro první část URL příslušný soubor?
+        // Cesta upravena na ../App/controllers/ podle tvé struktury
+        if (isset($url[0]) && file_exists('../App/controllers/' . ucfirst($url[0]) . 'Controller.php')) {
+            $this->controller = ucfirst($url[0]) . 'Controller';
+            unset($url[0]); // Odstranění použité části z pole
+        }
+
+        // Načtení souboru s kontrolerem a vytvoření jeho instance
+        require_once '../App/controllers/' . $this->controller . '.php';
+        $this->controller = new $this->controller;
+
+        // 2. METODA: Existuje pro druhou část URL funkce uvnitř kontroleru?
+        if (isset($url[1])) {
+            if (method_exists($this->controller, $url[1])) {
+                $this->method = $url[1];
+                unset($url[1]); // Odstranění použité části z pole
+            }
+        }
+
+        // 3. PARAMETRY: Vše, co v URL zbylo
+        $this->params = $url ? array_values($url) : [];
+
+        // FINÁLE: Spuštění vybrané metody a předání parametrů
+        call_user_func_array([$this->controller, $this->method], $this->params);
+    }
+
+    // Pomocná metoda pro bezpečné rozsekání URL adresy
+    public function parseUrl() {
+        if (isset($_GET['url'])) {
+            // Vyčistí a rozdělí text podle lomítek
+            return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+        }
+        return [];
+    }
+}

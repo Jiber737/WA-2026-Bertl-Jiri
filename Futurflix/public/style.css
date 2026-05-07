@@ -1,0 +1,123 @@
+/* Import fontu (Burbank se často musí načíst lokálně nebo přes podobnou alternativu) */
+@font-face {
+    font-family: 'BurbankBigCity';
+    /* Pokud máš soubor fontu ve složce public/fonts/, cesta by byla: */
+    src: url('fonts/BurbankBigCity-Bold.otf') format('opentype');
+    /* Pokud ho nemáš, prohlížeč použije náhradní tučný bezpatkový font */
+}
+
+:root {
+    --bg-dark-grey: #141414;    /* Hlavní pozadí (tmavě šedá jako Netflix) */
+    --header-black: #050505;    /* Skoro černá pro hlavičku */
+    --flix-red: #E50914;        /* Hlavní červená */
+    --text-grey: #a3a3a3;       /* Světlejší šedá pro text, ať to netahá oči */
+    --text-white: #ffffff;      /* Čistě bílá jen pro nadpisy */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark-grey);
+    color: var(--text-grey);
+    font-family: 'Segoe UI', Arial, sans-serif; /* Základní font pro text */
+    line-height: 1.6;
+}
+
+/* HLAVIČKA */
+header {
+    background-color: var(--header-black);
+    padding: 15px 4%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.logo {
+    /* Tvůj vysněný styl pro Futurflix */
+    font-family: 'BurbankBigCity', 'Arial Black', sans-serif;
+    color: var(--flix-red);
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* NAVIGACE V HEADERU */
+nav a {
+    color: var(--text-white);
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--flix-red);
+}
+
+/* TLAČÍTKO V MENU */
+.btn-contest {
+    background-color: var(--flix-red);
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'BurbankBigCity', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-contest:hover {
+    transform: scale(1.05);
+    background-color: #ff1f1f;
+}
+
+/* HLAVNÍ OBSAH */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+h1 {
+    color: var(--text-white);
+    font-family: 'BurbankBigCity', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+/* MŘÍŽKA VIDEÍ */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.video-card {
+    background-color: #222;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #333;
+    transition: border 0.3s;
+}
+
+.video-card:hover {
+    border: 1px solid var(--flix-red);
+}

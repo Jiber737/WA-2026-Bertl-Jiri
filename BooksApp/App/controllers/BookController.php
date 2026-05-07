@@ -1,7 +1,17 @@
 <?php
 // Soubor: BooksApp/App/controllers/BookController.php
+// Přidejte tento řádek (cesta musí odpovídat umístění souboru Book.php)
+require_once __DIR__ . '/../models/Book.php';
+
 
 class BookController {
+
+    private $bookModel; // Definice vlastnosti (v novějších verzích PHP doporučeno)
+
+    public function __construct() {
+        // TADY JE PROBLÉM: Musíš vytvořit instanci modelu Book
+        $this->bookModel = new Book(); 
+    }
 
     // Zobrazení seznamu knih
        // 0. Výchozí metoda pro zobrazení úvodní stránky včetně seznamu knih
@@ -59,10 +69,13 @@ class BookController {
         $this->addErrorMessage('Pro přidání knihy se musíte nejprve přihlásit.');
         header('Location: ' . BASE_URL . '/index.php?url=auth/login');
         exit;
-    }
+        }
         require_once '../App/views/books/book_create.php';
     }
 
+    // Zobrazení formuláře pro přidání knihy
+   
+        // Kontrola přihlášení (pokud ji už máte zavedenou)
     // Zobrazení formuláře pro přidání knihy
     public function create() {
         // Kontrola přihlášení (pokud ji už máte zavedenou)
@@ -250,7 +263,6 @@ class BookController {
         // Kontrola, zda bylo v URL vůbec předáno nějaké ID
         // 🔒 !!! ZMĚNA: Kontrola, zda je uživatel přihlášen. 
         // Pokud není, nepustíme ho ani k načítání dat z DB.
-        
         if (!isset($_SESSION['user_id'])) {
         $this->addErrorMessage('Pro úpravu knihy se musíte nejprve přihlásit.');
         header('Location: ' . BASE_URL . '/index.php?url=auth/login');
@@ -267,27 +279,17 @@ class BookController {
         // Načtení potřebných tříd a spojení s databází
         require_once '../app/models/Database.php';
         require_once '../app/models/Book.php';
-        require_once '../app/models/Category.php';
-
-
         
-        $categoryModel = new Category($this->db); 
-        $categories = $categoryModel->getAllCategories();
-
-        $this->render('books/book_edit', [
-         'book' => $book,
-         'categories' => $categories
-        ]);
 
         $database = new Database();
         $db = $database->getConnection();
 
         // Získání dat o konkrétní knize
         $bookModel = new Book($db);
-        $book = $bookModel->getById($id); // Proměnná $book nyní obsahuje asociativní pole dat
-
+        $book = $this->bookModel->getById($id); 
 
         $uploadedImages = $this->processImageUploads();
+        $book = $this->bookModel->getById($id);
 
         // Bezpečnostní kontrola: Zda kniha s daným ID vůbec existuje
         if (!$book) {
@@ -305,9 +307,20 @@ class BookController {
             exit;
         }
 
+
+        $dbConnection = $this->bookModel->getDb(); 
+    
+        $categoryModel = new Category($dbConnection); 
+        $categories = $categoryModel->getAllCategories();
+
+        $this->render('books/book_edit', [
+        'book' => $book,
+        'categories' => $categories
+    ]);
         // Pokud je vše v pořádku, načte se připravený soubor s HTML formulářem pro úpravy.
         // Šablona bude mít automaticky přístup k proměnné $book.
         require_once '../app/views/books/book_edit.php';
+
     }
 
         // 5. Zpracování dat odeslaných z editačního formuláře

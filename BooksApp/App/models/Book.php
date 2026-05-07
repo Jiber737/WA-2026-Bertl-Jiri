@@ -59,6 +59,10 @@ class Book {
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    // V souboru App/models/Book.php
+    public function getDb() {
+     return $this->db; // Předpokládáme, že v konstruktoru plníš $this->db
+    }
 
     // 2. OPRAVA V UPDATE: Opravena proměnná u images
     public function update(
