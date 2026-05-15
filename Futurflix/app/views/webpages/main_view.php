@@ -36,26 +36,28 @@
                             <a href="<?= BASE_URL ?>/index.php?url=video/delete/<?= $video['id'] ?>" class="action-btn delete-btn" title="Smazat" onclick="return confirm('Opravdu smazat toto video?')">✖</a>
                         </div>
 
-                        <div class="video-thumbnail">
-                            <?php if(!empty($video['image'])): ?>
-                                <img src="<?= BASE_URL ?>/uploads/<?= htmlspecialchars($video['image']) ?>" alt="Thumbnail">
-                            <?php else: ?>
-                                <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #444; font-family: 'BurbankBigCity';">FUTURFLIX</div>
-                            <?php endif; ?>
-                        </div>
+                        <a href="<?= BASE_URL ?>/index.php?url=video/show/<?= $video['id'] ?>" style="text-decoration: none; color: inherit;">
+                            <div class="video-thumbnail">
+                                <?php if(!empty($video['image'])): ?>
+                                    <img src="<?= BASE_URL ?>/uploads/<?= htmlspecialchars($video['image']) ?>" alt="Thumbnail">
+                                <?php else: ?>
+                                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #444; font-family: 'BurbankBigCity';">FUTURFLIX</div>
+                                <?php endif; ?>
+                            </div>
 
-                        <div class="video-info">
-                            <h3><?= htmlspecialchars($video['title']) ?></h3>
-                            <div class="video-details">
-                                <span class="age-tag"><?= htmlspecialchars($video['age_rating'] ?? '12+') ?></span>
-                                <span><?= htmlspecialchars($video['genre'] ?? 'Film') ?></span>
-                                <span>•</span>
-                                <span><?= htmlspecialchars($video['author'] ?? 'Admin') ?></span>
+                            <div class="video-info">
+                                <h3><?= htmlspecialchars($video['title']) ?></h3>
+                                <div class="video-details">
+                                    <span class="age-tag"><?= htmlspecialchars($video['age_rating'] ?? '12+') ?></span>
+                                    <span><?= htmlspecialchars($video['genre'] ?? 'Film') ?></span>
+                                    <span>•</span>
+                                    <span><?= htmlspecialchars($video['author'] ?? 'Admin') ?></span>
+                                </div>
+                                <div style="margin-top: 10px; color: var(--flix-red); font-weight: bold; font-size: 0.8rem;">
+                                    PŘEHRÁT ▷
+                                </div>
                             </div>
-                            <div style="margin-top: 10px;">
-                                <a href="<?= BASE_URL ?>/index.php?url=video/show/<?= $video['id'] ?>" style="color: var(--flix-red); text-decoration: none; font-weight: bold; font-size: 0.8rem;">PŘEHRÁT ▷</a>
-                            </div>
-                        </div>
+                        </a>
                         
                     </div>
                 <?php endforeach; ?>

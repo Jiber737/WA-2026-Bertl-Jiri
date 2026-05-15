@@ -358,6 +358,97 @@ h1 {
     transform: scale(1.1);
 }
 
+/* Globální nastavení pozadí pro celou stránku detailu */
+.video-detail-body {
+    margin: 0;
+    padding: 0;
+    /* Tvůj gradient */
+    background: linear-gradient(180deg, rgb(24, 24, 24) 50%, rgb(34, 0, 0) 100%);
+    min-height: 100vh;
+}
+
+.video-view-main {
+    padding: 40px 20px;
+}
+
+.video-view-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Přehrávač */
+.video-player-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    background-color: #000;
+}
+
+.video-player-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: none;
+}
+
+/* Texty */
+.video-main-title {
+    font-size: 3.5rem;
+    color: var(--text-white); /* #f3ecec */
+    margin-bottom: 15px;
+    font-family: 'BurbankBigCity', sans-serif;
+}
+
+.video-info-bar {
+    display: flex;
+    gap: 15px;
+    color: var(--text-grey); /* #a3a3a3 */
+    margin-bottom: 30px;
+}
+
+.info-separator {
+    color: var(--flix-red); /* #E50914 */
+}
+
+/* Popisový box */
+.video-description-container {
+    background-color: var(--header-black); /* #2c2c2c */
+    padding: 30px;
+    border-radius: 8px;
+    border-left: 5px solid var(--flix-red);
+    margin-bottom: 40px;
+}
+
+.description-title {
+    color: var(--flix-red);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.description-text {
+    color: var(--text-grey);
+    line-height: 1.6;
+}
+
+/* Tlačítko */
+.btn-back {
+    display: inline-block;
+    color: var(--text-white);
+    text-decoration: none;
+    border: 1px solid #555;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background-color: var(--flix-red);
+    border-color: var(--flix-red);
+}
+
 
 /* --- FORMULÁŘE (Přidání videa atd.) --- */
 
@@ -439,6 +530,42 @@ textarea.form-control {
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
+
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.file-input-label {
+    background-color: transparent;
+    border: 1px solid var(--text-grey);
+    color: var(--text-white);
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+.file-input-label:hover {
+    background-color: var(--flix-red);
+    border-color: var(--flix-red);
+}
+
+.file-input-hidden {
+    display: none; /* Schováme ten hnusný systémový input */
+}
+
+.file-name-text {
+    color: var(--text-grey);
+    font-size: 0.9rem;
+}
+
+
 
 /* Tlačítko k odeslání (přepisuje lehce základní btn-contest) */
 .btn-submit-form {

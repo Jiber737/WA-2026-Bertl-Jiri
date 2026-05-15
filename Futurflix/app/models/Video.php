@@ -26,14 +26,16 @@ class Video {
     }
 
     // Vytvoření nového videa
-    public function create($title, $youtube_url, $description, $genre, $release_year, $age_rating, $image) {
-        $sql = "INSERT INTO videos (title, youtube_url, description, genre, release_year, age_rating, image) 
-                VALUES (:title, :youtube_url, :description, :genre, :release_year, :age_rating, :image)";
+// Vytvoření nového videa
+    public function create($title, $youtube_id, $description, $genre, $release_year, $age_rating, $image) {
+        // Zde jsme změnili youtube_url na youtube_id, aby to sedělo s databází
+        $sql = "INSERT INTO videos (title, youtube_id, description, genre, release_year, age_rating, image) 
+                VALUES (:title, :youtube_id, :description, :genre, :release_year, :age_rating, :image)";
         
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             ':title'        => $title,
-            ':youtube_url'  => $youtube_url,
+            ':youtube_id'   => $youtube_id, // Tady ukládáme ID
             ':description'  => $description,
             ':genre'        => $genre,
             ':release_year' => $release_year,
@@ -43,10 +45,10 @@ class Video {
     }
 
     // Aktualizace existujícího videa (Update)
-    public function update($id, $title, $youtube_url, $description, $genre, $release_year, $age_rating, $image) {
+    public function update($id, $title, $youtube_id, $description, $genre, $release_year, $age_rating, $image) {
         $sql = "UPDATE videos 
                 SET title = :title, 
-                    youtube_url = :youtube_url, 
+                    youtube_id = :youtube_id, 
                     description = :description, 
                     genre = :genre, 
                     release_year = :release_year, 
@@ -59,7 +61,7 @@ class Video {
         return $stmt->execute([
             ':id'           => $id,
             ':title'        => $title,
-            ':youtube_url'  => $youtube_url,
+            ':youtube_id'   => $youtube_id,
             ':description'  => $description,
             ':genre'        => $genre,
             ':release_year' => $release_year,

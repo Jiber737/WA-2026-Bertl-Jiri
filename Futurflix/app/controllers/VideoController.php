@@ -22,42 +22,83 @@ class VideoController extends Controller {
     }
 
     public function store() {
-        // Zkontrolujeme, jestli sem uživatel opravdu poslal formulář
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
-            // 1. KOUZLO: Extrakce YouTube ID z URL (např. z https://www.youtube.com/watch?v=dQw4w9WgXcQ získáme dQw4w9WgXcQ)
+            // 1. Získáme URL z formuláře a "vykousneme" z ní 11-místné ID
             $url = $_POST['youtube_url'];
-            // Tento "hrůzostrašný" kód je regulární výraz - profi detektiv, co najde ID v jakémkoliv typu YT odkazu
             preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
+            
             $youtube_id = isset($match[1]) ? $match[1] : null;
 
+            // Pokud vzoreček nenašel ID, uživatel zadal nesmyslnou adresu
             if (!$youtube_id) {
                 die("<h2 style='color:red; text-align:center;'>Chyba: Zadal jsi neplatný YouTube odkaz!</h2>");
             }
 
-            // 2. Zabalíme všechna data do balíčku
-            $data = [
-                'youtube_id' => $youtube_id,
-                'title' => $_POST['title'],
-                'description' => $_POST['description'],
-                'genre' => $_POST['genre'],
-                'release_year' => $_POST['release_year'],
-                'age_rating' => $_POST['age_rating']
-                //'image' => $imageName
-            ];
-
-            // 3. Předáme balíček modelu, ať ho uloží
-            $videoModel = new Video();
-            
-            if ($videoModel->create($data)) {
-                // Přesměrování zpět na hlavní stránku
-                header("Location: " . BASE_URL . "/index.php");
-                exit; // Důležité: zastaví další vykonávání kódu
+            // 2. Nahrání obrázku na server
+            $imageName = $this->processImageUpload();
+            if (!$imageName) {
+                $imageName = 'obalka-neni.png';
             }
-             else {
+
+            // 3. Ošetření vstupů
+            $title        = htmlspecialchars($_POST['title']);
+            $description  = htmlspecialchars($_POST['description']);
+            $genre        = htmlspecialchars($_POST['genre']);
+            $release_year = (int)$_POST['release_year'];
+            $age_rating   = htmlspecialchars($_POST['age_rating']);
+
+            // 4. Uložení do databáze (předáváme proměnnou $youtube_id)
+            $isCreated = $this->getModel()->create(
+                $title, 
+                $youtube_id, // <-- Předáváme jen ID, jak vyžaduje databáze
+                $description, 
+                $genre, 
+                $release_year, 
+                $age_rating, 
+                $imageName 
+            );
+            
+            if ($isCreated) {
+                $this->addSuccessMessage('Video bylo úspěšně přidáno.');
+                header("Location: " . BASE_URL . "/index.php");
+                exit; 
+            } else {
                 echo "<h2 style='color:red; text-align:center;'>Jejda, něco se pokazilo v databázi.</h2>";
             }
         }
+    }
+
+    private function processImageUpload() {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            
+            // Cesta ke složce s uploady (přizpůsob podle struktury projektu)
+            $uploadDir = __DIR__ . '/../../public/uploads/';
+            
+            // Vytvoří složku, pokud ještě neexistuje
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $fileName = basename($_FILES['image']['name']);
+            $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            
+            // Povolené formáty obrázků
+            $allowedExts = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (in_array($fileExt, $allowedExts)) {
+                // Vygenerujeme unikátní název pro soubor, aby se nepřepisovaly existující
+                $newFileName = uniqid('video_') . '.' . $fileExt;
+                $destination = $uploadDir . $newFileName;
+
+                // Přesuneme dočasný soubor na jeho finální místo
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $destination)) {
+                    return $newFileName; // Vrátíme název pro uložení do databáze
+                }
+            }
+        }
+        return null;
+        
     }
 
     private function getModel() {
@@ -89,6 +130,8 @@ class VideoController extends Controller {
             exit;
         }
 
+        // Vytvoříme pro formulář novou položku 'youtube_url' složením základu a ID z databáze
+        $video['youtube_url'] = "https://www.youtube.com/watch?v=" . $video['youtube_id'];
         require_once '../app/views/webpages/video_edit.php';
     }
 
@@ -96,11 +139,18 @@ class VideoController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // 1. Zjistíme, jestli uživatel nahrál nový obrázek, nebo ponecháme starý
+            $url = $_POST['youtube_url'];
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
+            $youtube_id = isset($match[1]) ? $match[1] : null;
+
+            if (!$youtube_id) {
+                die("<h2 style='color:red; text-align:center;'>Chyba: Zadal jsi neplatný YouTube odkaz!</h2>");
+            }
+            
             $imageName = $this->processImageUpload() ?: $_POST['old_image'];
 
             // 2. Bezpečné načtení dat z formuláře (přiřazení do proměnných)
             $title        = htmlspecialchars($_POST['title']);
-            $youtube_url  = htmlspecialchars($_POST['youtube_url']);
             $description  = htmlspecialchars($_POST['description']);
             $genre        = htmlspecialchars($_POST['genre']);
             $release_year = (int)$_POST['release_year'];
@@ -110,7 +160,7 @@ class VideoController extends Controller {
             $this->getModel()->update(
                 $id, 
                 $title, 
-                $youtube_url, 
+                $youtube_id, // TADY posíláme vypreparované ID, ne celou URL                
                 $description, 
                 $genre, 
                 $release_year, 
@@ -123,6 +173,33 @@ class VideoController extends Controller {
             exit;
         }
     }
+
+
+    public function show($id = null) {
+        if (!$id) {
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
+        require_once '../app/models/Database.php';
+        require_once '../app/models/Video.php';
+
+        $database = new Database();
+        $db = $database->getConnection();
+        $videoModel = new Video($db);
+        
+        // Načtení dat o videu podle ID
+        $video = $videoModel->getById($id);
+
+        if (!$video) {
+            die("Video nebylo nalezeno.");
+        }
+
+        // Předání dat do view (předáváme pole s klíčem 'video')
+        $data = ['video' => $video];
+        require_once '../app/views/webpages/video_view.php';
+    }
+
 
     public function delete($id = null) {
         if (!$id) {

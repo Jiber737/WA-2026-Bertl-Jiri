@@ -14,7 +14,7 @@
         <h1 class="form-title">PŘIDAT VIDEO</h1>
         <p class="form-subtitle">Vyplň údaje o svém díle a ukaž ho světu.</p>
 
-        <form action="<?= BASE_URL ?>/index.php?url=video/store" method="POST" class="futurflix-form">
+        <form action="<?= BASE_URL ?>/index.php?url=video/store" method="POST" enctype="multipart/form-data" class="futurflix-form">
             
             <div class="form-group">
                 <label for="title">Název videa <span class="required-star">*</span></label>
@@ -44,6 +44,7 @@
                         <option value="Dokument">Dokument</option>
                         <option value="Herní">Herní video</option>
                         <option value="Podcast">Podcast</option>
+                        <option value="Podcast">Thriller</option>
                     </select>
                 </div>
 
@@ -71,6 +72,21 @@
                 </div>
 
             </div>
+
+            <div class="form-group">
+                <label for="image">Náhledový obrázek videa:</label>
+                <div class="file-input-wrapper">
+                    <label for="image" class="file-input-label">VYBRAT OBRÁZEK</label>
+                    <input type="file" id="image" name="image" accept="image/*" class="file-input-hidden">
+                    <span id="file-name" class="file-name-text">Soubor nevybrán</span>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('image').onchange = function () {
+                    document.getElementById('file-name').textContent = this.files[0] ? this.files[0].name : "Soubor nevybrán";
+                };
+            </script>
 
             <button type="submit" class="btn-contest btn-submit-form">
                 ULOŽIT DO KNIHOVNY
