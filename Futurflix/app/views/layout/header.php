@@ -1,8 +1,12 @@
-<!-- Smaž na chvíli ty require/include příkazy a dej tam jen tohle -->
-<header style="background: red; color: white; padding: 20px;">
-    <h1><span>Futurflix</span></h1>
+<header>
+    <div class="logo">
+        <a href="<?= BASE_URL ?>/index.php" style="color: inherit; text-decoration: none;">FUTURFLIX</a>
+    </div>
     <nav>
-        <a href="#" style="color: white;">Domů</a>
-        <a href="#" style="color: white;">Soutěž</a>
+        <a href="<?= BASE_URL ?>/index.php">Domů</a>
+        
+        <a href="<?= BASE_URL ?>/index.php?url=video/create" class="btn-add">+ Přidat video</a>
     </nav>
+
+
 </header>

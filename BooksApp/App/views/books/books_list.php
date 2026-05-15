@@ -57,18 +57,40 @@
                         <div style="flex-grow: 1;">
                             <h3 style="margin: 0 0 5px 0; font-size: 1.1rem; color: #fff; line-height: 1.3;"><?= htmlspecialchars($book['title']); ?></h3>
                             <p style="margin: 0 0 10px 0; color: #8892b0; font-size: 0.9rem;"><?= htmlspecialchars($book['author']); ?></p>
-                            
+
+                            <div style="margin-bottom: 10px;">
+                                 <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <?= htmlspecialchars($book['category_name'] ?? 'Nezařazeno') ?>
+                                 </span>
+                            </div>
+
                             <p style="margin: 0 0 15px 0; color: var(--accent); font-weight: 600; font-size: 1.3rem;">
-                                <?= number_format($book['price'] ?? 0, 2); ?> Kč
+                            <?= number_format($book['price'] ?? 0, 2); ?> Kč
                             </p>
                         </div>
 
                         <div style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
     <a href="index.php?url=book/show/<?= $book['id']; ?>" class="submit-btn" style="margin-top: 0; padding: 10px; text-align: center; flex: 2; font-size: 0.85rem;">Detail</a>
     
-    <a href="index.php?url=book/edit/<?= $book['id']; ?>" class="submit-btn" style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,255,255,0.2); color: #a0aec0; background: transparent;" title="Upravit">✎</a>
-    
-    <a href="index.php?url=book/delete/<?= $book['id']; ?>" class="submit-btn btn-delete" style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,75,75,0.4); color: #ff4b4b; background: transparent;" title="Smazat" onclick="return confirm('Opravdu chcete tento záznam smazat?')">✖</a>
+    <?php 
+        // 1. Zjistíme, zda je uživatel administrátor
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+        
+        // 2. Podmínka: Zobrazit ovládací prvky pouze pokud je uživatel autor NEBO admin
+        if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $book['created_by'] || $isAdmin)): 
+    ?>
+        <a href="index.php?url=book/edit/<?= $book['id']; ?>" 
+           class="submit-btn" 
+           style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,255,255,0.2); color: #a0aec0; background: transparent;" 
+           title="Upravit">✎</a>
+        
+        <a href="index.php?url=book/delete/<?= $book['id']; ?>" 
+           class="submit-btn btn-delete" 
+           style="margin-top: 0; padding: 10px; text-align: center; flex: 1; font-size: 0.85rem; border-color: rgba(255,75,75,0.4); color: #ff4b4b; background: transparent;" 
+           title="Smazat" 
+           onclick="return confirm('Opravdu chcete tento záznam smazat?')">✖</a>
+           
+    <?php endif; ?>
 </div>
                         
                     </div>

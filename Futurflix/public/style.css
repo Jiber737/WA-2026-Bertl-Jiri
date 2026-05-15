@@ -2,16 +2,16 @@
 @font-face {
     font-family: 'BurbankBigCity';
     /* Pokud máš soubor fontu ve složce public/fonts/, cesta by byla: */
-    src: url('fonts/BurbankBigCity-Bold.otf') format('opentype');
+    src: url('fonts/burbankbigcondensed_bold.otf') format('opentype');
     /* Pokud ho nemáš, prohlížeč použije náhradní tučný bezpatkový font */
 }
 
 :root {
-    --bg-dark-grey: #141414;    /* Hlavní pozadí (tmavě šedá jako Netflix) */
-    --header-black: #050505;    /* Skoro černá pro hlavičku */
+    --bg-dark-grey: #3b3b3b;    /* Hlavní pozadí (tmavě šedá jako Netflix) */
+    --header-black: #2c2c2c;    /* Skoro černá pro hlavičku */
     --flix-red: #E50914;        /* Hlavní červená */
     --text-grey: #a3a3a3;       /* Světlejší šedá pro text, ať to netahá oči */
-    --text-white: #ffffff;      /* Čistě bílá jen pro nadpisy */
+    --text-white: #f3ecec;      /* Čistě bílá jen pro nadpisy */
 }
 
 * {
@@ -21,9 +21,15 @@
 }
 
 body {
-    background-color: var(--bg-dark-grey);
+    /* Tady je to kouzlo: Kruhový přechod, který začíná nahoře uprostřed velmi tmavě červenou a končí tvou tmavě šedou/černou */
+    background: linear-gradient(180deg,rgb(24, 24, 24) 50%, rgb(34, 0, 0) 100%);
+    
+    /* Tohle zajistí, že pozadí bude vždycky přes celou obrazovku, i když je na ní málo textu */
+    min-height: 100vh;
+    background-attachment: fixed;
+    
     color: var(--text-grey);
-    font-family: 'Segoe UI', Arial, sans-serif; /* Základní font pro text */
+    font-family: 'Segoe UI', Arial, sans-serif;
     line-height: 1.6;
 }
 
@@ -40,12 +46,14 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
+
+
 .logo {
     /* Tvůj vysněný styl pro Futurflix */
     font-family: 'BurbankBigCity', 'Arial Black', sans-serif;
     color: var(--flix-red);
-    font-size: 2.5rem;
-    letter-spacing: 1px;
+    font-size: 4rem;
+    letter-spacing: 5px;
     text-transform: uppercase;
     cursor: pointer;
 }
@@ -54,13 +62,34 @@ header {
 nav a {
     color: var(--text-white);
     text-decoration: none;
-    margin-right: 20px;
+    margin-right: 15px;
     font-weight: bold;
-    transition: color 0.3s;
+    /* --- TOTO JE NOVÉ --- */
+    padding: 8px 18px; /* Udělá kolem textu obdélník */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Jemná světlá hrana */
+    border-radius: 25px; /* Pilulkové zaoblení rohů */
+    background-color: rgba(0, 0, 0, 0.4); /* Lehce tmavé pozadí tlačítka */
+    transition: all 0.3s ease; /* Plynulá animace pro všechny změny */
 }
 
 nav a:hover {
-    color: var(--flix-red);
+    color: var(--text-white);
+    background-color: var(--flix-red); /* Vyplní se tvojí červenou */
+    border-color: var(--flix-red); /* Změní se i rámeček */
+    transform: scale(1.05); /* Tlačítko lehce povyskočí */
+}
+
+/* Speciální tlačítko pro přidání videa */
+nav a.btn-add {
+    background-color: var(--flix-red);
+    color: white;
+    border-color: var(--flix-red);
+}
+
+nav a.btn-add:hover {
+    background-color: white; /* Při najetí zbělá pozadí */
+    color: var(--flix-red);  /* Text zčervená */
+    border-color: white;
 }
 
 /* TLAČÍTKO V MENU */
@@ -83,7 +112,7 @@ nav a:hover {
 
 /* HLAVNÍ OBSAH */
 main {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 40px 20px;
 }
@@ -95,29 +124,484 @@ h1 {
     margin-bottom: 10px;
 }
 
-.hero-description {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
+/* --- HERO BANNER --- */
+.hero-banner {
+    /* Výška a pozadí s tmavým přechodem, aby šel číst text */
+    min-height: 400px;
+    background: linear-gradient(90deg, rgba(20,20,20,1) 0%, rgba(20,20,20,0.8) 40%, rgba(20,20,20,0) 100%), #1a1a1a;
+    border-radius: 12px;
+    margin-bottom: 50px; /* Odskočení od videí pod bannerem */
+    display: flex;
+    align-items: center; /* Vycentrování obsahu na střed výšky */
+    padding: 40px 5%; /* Odsazení od okrajů */
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* MŘÍŽKA VIDEÍ */
+.hero-content {
+    max-width: 600px; /* Aby text nešel přes celou obrazovku */
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* TADY JE KOUZLO: Udělá dokonalé a stejné mezery mezi nadpisem, textem a tlačítky */
+}
+
+/* Malý štítek "PREMIÉRA" */
+.hero-badge {
+    background-color: rgba(229, 9, 20, 0.15); /* Poloprůhledná tvoje červená */
+    color: var(--flix-red);
+    border: 1px solid var(--flix-red);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content; /* Aby nebyl roztažený přes celou šířku */
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin: 0; /* Marginy vypínáme, protože používáme "gap" nahoře */
+    color: white;
+    font-family: 'BurbankBigCity', sans-serif;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    line-height: 1.1;
+}
+
+.hero-content p {
+    font-size: 1.15rem;
+    color: var(--text-grey);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Řádek s tlačítky (Přehrát + Přepínače zobrazení) */
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Mezera mezi červeným tlačítkem a těmi malými ikonkami */
+    margin-top: 10px;
+}
+
+/* Obal pro ikonky Mřížka/Seznam */
+.view-toggle {
+    display: flex;
+    gap: 5px; /* Mezera přímo mezi dvěma ikonkami */
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Samotné ikonky zobrazení */
+.toggle-btn {
+    background: transparent;
+    color: var(--text-grey);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn:hover {
+    color: white;
+}
+
+/* Takhle bude vypadat to vybrané (aktivní) zobrazení */
+.toggle-btn.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* MŘÍŽKA VIDEÍ - Zarovnání doleva, max 4 na řádek */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+    /* Vytvoří sloupce o velikosti cca 1/4, ale ne menší než 250px */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+    gap: 20px;
+    justify-content: start; /* Zarovnání obsahu doleva */
+    align-items: start;
+    width: 100%;
 }
 
+/* KARTA VIDEA - Základní stav */
 .video-card {
-    background-color: #222;
+    position: relative;
     aspect-ratio: 16 / 9;
     border-radius: 8px;
+    background-color: #222;
+    border: 1px solid #333;
+    overflow: visible; /* DŮLEŽITÉ: Musí být visible, aby zvětšená karta "vyjela" ven */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    cursor: pointer;
+    z-index: 1;
+}
+
+/* HOVER EFEKT - Zvětšení a "vyskočení" z mřížky */
+.video-card:hover {
+    transform: scale(1.2); /* Výrazné zvětšení */
+    z-index: 100; /* Karta se dostane nad všechna ostatní videa */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    border-color: var(--flix-red);
+}
+
+/* OBRÁZEK / THUMBNAIL */
+.video-thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden; /* Obrázek zůstane zaoblený */
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail img {
+    opacity: 0.4; /* Ztmavení pro čitelnost textu */
+}
+
+/* INFORMACE - Skryté, zobrazí se při hoveru */
+.video-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    opacity: 0; /* Schované v základu */
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+}
+
+.video-card:hover .video-info {
+    opacity: 1;
+    transform: translateY(0); /* Jemné vyjetí nahoru */
+}
+
+/* Detaily textu */
+.video-info h3 {
+    color: var(--text-white);
+    font-size: 1.35rem;
+    margin-bottom: 2.5px;
+    font-family: 'BurbankBigCity', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.video-details {
+    font-size: 0.75rem;
+    color: var(--text-grey);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.age-tag {
+    border: 1px solid var(--text-grey);
+    padding: 0 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+
+/* Tlačítka pro úpravu a smazání na kartě videa */
+.card-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Zarovnání do pravého horního rohu */
+    display: flex;
+    gap: 8px;
+    z-index: 10; /* Musí být nad obrázkem */
+    opacity: 0; /* Ve výchozím stavu jsou neviditelná */
+    transition: opacity 0.3s ease;
+}
+
+/* Zobrazí tlačítka při najetí myší na kartu */
+.video-card:hover .card-actions {
+    opacity: 1;
+}
+
+/* Samotné ikonky (kolečka) */
+.action-btn {
+    background: rgba(0, 0, 0, 0.7); /* Poloprůhledné tmavé pozadí */
+    color: white;
+    text-decoration: none;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #333;
-    transition: border 0.3s;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
 }
 
-.video-card:hover {
-    border: 1px solid var(--flix-red);
+/* Hover na ikonku úpravy (změní se na Netflixově bílou) */
+.action-btn.edit-btn:hover {
+    background: white;
+    color: black;
+    border-color: white;
+    transform: scale(1.1);
 }
+
+/* Hover na ikonku smazání (změní se na tvojí červenou) */
+.action-btn.delete-btn:hover {
+    background: var(--flix-red);
+    color: white;
+    border-color: var(--flix-red);
+    transform: scale(1.1);
+}
+
+
+/* --- FORMULÁŘE (Přidání videa atd.) --- */
+
+/* Hlavní box formuláře */
+.form-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #141414; /* Tmavé Netflix pozadí boxu */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    border: 1px solid #333;
+}
+
+/* Nadpisy ve formuláři */
+.form-title {
+    font-family: 'BurbankBigCity', sans-serif;
+    color: var(--flix-red);
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: var(--text-grey);
+    margin-bottom: 30px;
+}
+
+/* Samotný formulář a rozložení prvků */
+.futurflix-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: var(--text-white);
+    font-size: 0.95rem;
+}
+
+.required-star {
+    color: var(--flix-red);
+}
+
+/* Inputy, textarey a selecty */
+.form-control {
+    padding: 14px;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Textarea potřebuje upravit roztahování jen vertikálně */
+textarea.form-control {
+    resize: vertical;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--flix-red);
+    background: #2a2a2a;
+}
+
+/* Mřížka pro menší prvky (rok, žánr...) vedle sebe */
+.form-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* Tlačítko k odeslání (přepisuje lehce základní btn-contest) */
+.btn-submit-form {
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    width: 100%; /* Roztáhne tlačítko přes celou šířku */
+}
+
+/* Odkaz Zrušit */
+.form-cancel-link {
+    text-align: center;
+    color: var(--text-grey);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    transition: color 0.2s;
+}
+
+.form-cancel-link:hover {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+
+
+
+
+/* --- PATIČKA (FOOTER) --- */
+.site-footer {
+    background-color: rgba(0, 0, 0, 0.75); /* Tmavá poloprůhledná barva, aby skrz ni lehce prosvítalo pozadí */
+    border-top: 1px solid #333;
+    padding: 50px 5% 20px;
+    margin-top: 80px; /* Udělá mezeru mezi obsahem stránky a patičkou */
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-logo h2 {
+    font-family: 'BurbankBigCity', sans-serif;
+    color: #555; /* Záměrně hodně tmavá šedá, ať neruší obsah nahoře */
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.footer-logo h2:hover {
+    color: var(--flix-red); /* Při najetí myší se rozsvítí červeně */
+}
+
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    min-width: 200px;
+}
+
+.footer-links a {
+    color: var(--text-grey);
+    text-decoration: none;
+    font-size: 0.9rem;
+    line-height: 2.2; /* Větší mezery mezi řádky pro lepší čitelnost */
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    border-top: 1px solid #222;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* --- FUTURFLIX MODAL (Vyskakovací okno) --- */
+
+/* Tmavé pozadí, které překryje celý web a rozmaže ho */
+.modal-overlay {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Téměř černá průhlednost */
+    backdrop-filter: blur(5px); /* Skvělý rozmazávací efekt */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Musí být nad úplně vším ostatním */
+}
+
+/* Samotný box okna */
+.modal-content {
+    background: #141414; /* Filmová černo-šedá */
+    border: 1px solid #333;
+    padding: 35px 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* Efekt poskočení při načtení */
+}
+
+/* Animace "Vyskočení" */
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Nadpisy v okně */
+.modal-content h2 { 
+    margin-top: 0; 
+    margin-bottom: 15px;
+    font-family: 'BurbankBigCity', sans-serif; 
+    letter-spacing: 2px; 
+    font-size: 2rem;
+}
+
+.text-red { color: var(--flix-red); }
+.text-green { color: #10b981; }
+
+.modal-text {
+    color: var(--text-white);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Tlačítka dole v okně */
+.modal-buttons { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.btn-cancel { 
+    color: var(--text-grey); 
+    text-decoration: none; 
+    font-size: 0.9rem; 
+    transition: color 0.2s ease; 
+}
+
+.btn-cancel:hover { 
+    color: var(--text-white); 
+    text-decoration: underline; 
+}
+
+

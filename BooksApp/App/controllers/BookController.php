@@ -227,6 +227,16 @@ class BookController {
         exit;
         }
 
+                // 💡 ZMĚNA: Zjistíme, zda je přihlášený uživatel admin
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+
+        // 🛡️ ZMĚNA: Vyhodíme uživatele POKUD NENÍ autor A ZÁROVEŇ NENÍ admin
+        if ($book['created_by'] !== $_SESSION['user_id'] && !$isAdmin) {
+            $this->addErrorMessage('Nemáte oprávnění upravovat tuto knihu.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
         if (!$id) {
             $this->addErrorMessage('Nebylo zadáno ID knihy ke smazání.');
             header('Location: ' . BASE_URL . '/index.php');
@@ -269,6 +279,16 @@ class BookController {
         exit;
         }
 
+                // 💡 ZMĚNA: Zjistíme, zda je přihlášený uživatel admin
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+
+        // 🛡️ ZMĚNA: Vyhodíme uživatele POKUD NENÍ autor A ZÁROVEŇ NENÍ admin
+        if ($book['created_by'] !== $_SESSION['user_id'] && !$isAdmin) {
+            $this->addErrorMessage('Nemáte oprávnění upravovat tuto knihu.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
         if (!$id) {
             // Vyvolání červené notifikace pro kritickou chybu
             $this->addErrorMessage('Nebylo zadáno ID knihy k úpravě.');
@@ -277,8 +297,11 @@ class BookController {
         }
 
         // Načtení potřebných tříd a spojení s databází
+        // Načtení potřebných tříd a spojení s databází
         require_once '../app/models/Database.php';
         require_once '../app/models/Book.php';
+        require_once '../app/models/Category.php'; // <--- TENTO ŘÁDEK PŘIDEJ
+
         
 
         $database = new Database();
@@ -313,10 +336,7 @@ class BookController {
         $categoryModel = new Category($dbConnection); 
         $categories = $categoryModel->getAllCategories();
 
-        $this->render('books/book_edit', [
-        'book' => $book,
-        'categories' => $categories
-    ]);
+        
         // Pokud je vše v pořádku, načte se připravený soubor s HTML formulářem pro úpravy.
         // Šablona bude mít automaticky přístup k proměnné $book.
         require_once '../app/views/books/book_edit.php';
