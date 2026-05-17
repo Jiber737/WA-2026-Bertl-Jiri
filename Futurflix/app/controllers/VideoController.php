@@ -31,15 +31,18 @@ class VideoController extends Controller {
             $youtube_id = isset($match[1]) ? $match[1] : null;
 
             // Pokud vzoreček nenašel ID, uživatel zadal nesmyslnou adresu
+            // Pokud vzoreček nenašel ID, uživatel zadal nesmyslnou adresu
             if (!$youtube_id) {
-                die("<h2 style='color:red; text-align:center;'>Chyba: Zadal jsi neplatný YouTube odkaz!</h2>");
+                echo "<script>
+                        alert('Chyba: Zadal jsi neplatný YouTube odkaz!');
+                        window.history.back();
+                    </script>";
+                exit;
             }
 
             // 2. Nahrání obrázku na server
             $imageName = $this->processImageUpload();
-            if (!$imageName) {
-                $imageName = 'obalka-neni.png';
-            }
+            
 
             // 3. Ošetření vstupů
             $title        = htmlspecialchars($_POST['title']);
@@ -144,7 +147,11 @@ class VideoController extends Controller {
             $youtube_id = isset($match[1]) ? $match[1] : null;
 
             if (!$youtube_id) {
-                die("<h2 style='color:red; text-align:center;'>Chyba: Zadal jsi neplatný YouTube odkaz!</h2>");
+                echo "<script>
+                        alert('Chyba: Zadal jsi neplatný YouTube odkaz!');
+                        window.history.back();
+                    </script>";
+                exit;
             }
             
             $imageName = $this->processImageUpload() ?: $_POST['old_image'];

@@ -92,6 +92,30 @@ nav a.btn-add:hover {
     border-color: white;
 }
 
+/* Styl pro přivítání uživatele v liště */
+.welcome-text {
+    color: var(--text-white);
+    font-weight: bold;
+    margin-left: 15px;
+    font-size: 0.95rem;
+}
+
+/* Jemný styl pro odkaz odhlášení, aby se netloukl s červeným tlačítkem */
+.btn-logout {
+    color: var(--text-grey);
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.btn-logout:hover {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+
 /* TLAČÍTKO V MENU */
 .btn-contest {
     background-color: var(--flix-red);
@@ -495,6 +519,7 @@ h1 {
     font-weight: bold;
     color: var(--text-white);
     font-size: 0.95rem;
+    margin-top: 8px;
 }
 
 .required-star {
@@ -732,3 +757,79 @@ textarea.form-control {
 }
 
 
+/* --- FUTURFLIX AUTENTIZACE (Přihlášení a Registrace) --- */
+.auth-main {
+    flex-grow: 1; 
+    display: flex; 
+    align-items: center;
+}
+
+.auth-container {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 45px 60px;
+    border-radius: 8px;
+    max-width: 450px; /* Základ pro přihlášení */
+    width: 90%;
+    margin: 40px auto;
+    border: 1px solid #222;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* Registrace potřebuje být širší kvůli dvousloupcovému rozložení */
+.auth-container.register {
+    max-width: 550px;
+}
+
+.auth-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--text-white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--flix-red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+}
+
+.btn-auth:hover {
+    background-color: #f40612;
+}
+
+.auth-switch {
+    margin-top: 25px;
+    color: var(--text-grey);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.auth-switch a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
