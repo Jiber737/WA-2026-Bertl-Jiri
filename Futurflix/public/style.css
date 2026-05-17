@@ -833,3 +833,100 @@ textarea.form-control {
 .auth-switch a:hover {
     text-decoration: underline;
 }
+
+
+
+/* --- MŮJ PROFIL --- */
+
+/* Úprava hero banneru pro profil */
+.profile-banner {
+    min-height: auto;
+    padding: 35px 5%;
+    margin-bottom: 40px;
+}
+
+.profile-content {
+    max-width: 100%;
+}
+
+
+
+/* --- ODZNÁČKY ROLÍ V PROFILU --- */
+
+/* Základní tvar a velikost odznáčku (zvětšený text) */
+.profile-badge-role {
+    font-size: 1.1rem;          /* Větší text */
+    font-weight: bold;          /* Tučné písmo */
+    padding: 8px 18px;          /* Větší mezery uvnitř odznáčku */
+    border-radius: 25px;        /* Pilulkové zakulacení */
+    text-transform: uppercase;  /* Velká písmena */
+    letter-spacing: 2px;        /* Mezery mezi písmeny */
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Jemný stín pod odznáčkem */
+    font-family: 'BurbankBigCity', sans-serif;
+    margin-bottom: 10px;        /* Odskok od nadpisu pod ním */
+}
+
+
+
+/* Rámeček s uživatelskými informacemi */
+.profile-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    color: var(--text-grey);
+    font-size: 1.1rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.profile-info-val {
+    color: var(--text-white);
+}
+
+/* Samostatný nadpis sekce */
+.section-title {
+    font-family: 'BurbankBigCity', sans-serif;
+    color: var(--text-white);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Hláška, když uživatel nemá žádná videa */
+.profile-empty-text {
+    color: var(--text-grey);
+    font-size: 1.1rem;
+    grid-column: 1 / -1; /* Roztažení přes celou mřížku */
+}
+
+.profile-empty-link {
+    color: var(--flix-red);
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+    transition: color 0.2s ease;
+}
+
+.profile-empty-link:hover {
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+/* Klikatelný odkaz jména v hlavičce */
+.welcome-link {
+    color: var(--text-white);
+    font-weight: bold;
+    margin-left: 15px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.welcome-link:hover {
+    color: var(--flix-red);
+}

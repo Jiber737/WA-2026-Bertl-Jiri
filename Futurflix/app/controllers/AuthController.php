@@ -3,6 +3,42 @@ require_once '../core/Controller.php';
 
 class AuthController extends Controller {
 
+    
+    // Výchozí metoda, pokud někdo zadá jen ?url=auth
+    public function index() {
+        // Pokud už je uživatel přihlášený, hodíme ho na jeho profil
+        if (isset($_SESSION['user_id'])) {
+            header('Location: ' . BASE_URL . '/index.php?url=auth/profile');
+            exit;
+        } else {
+            // Pokud přihlášený není, pošleme ho na přihlašovací formulář
+            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+            exit;
+        }
+    }
+
+    // 2. Zobrazení profilu (TADY SE DĚLA SMYČKA, POKUD TOTO CHYBĚLO NEBO BYLO ŠPATNĚ UMÍSTĚNO)
+    public function profile() {
+        if (!isset($_SESSION['user_id'])) {
+            $this->addErrorMessage('Pro zobrazení profilu se musíš nejdříve přihlásit.');
+            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+            exit;
+        }
+
+        require_once '../app/models/Database.php';
+        require_once '../app/models/User.php';
+        require_once '../app/models/Video.php';
+        
+        $db = (new Database())->getConnection();
+        $userModel = new User($db);
+        $videoModel = new Video($db);
+
+        $user = $userModel->findById($_SESSION['user_id']);
+        $videos = $videoModel->getByUserId($_SESSION['user_id']);
+
+        require_once '../app/views/webpages/my_profile.php';
+    }
+    
     // 1. Zobrazení registračního formuláře
     public function register() {
         require_once '../app/views/auth/register.php';
@@ -76,6 +112,8 @@ class AuthController extends Controller {
                 // Uložení stavu do Session
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = !empty($user['nickname']) ? $user['nickname'] : $user['username'];
+
+                $_SESSION['is_admin'] = $user['is_admin'];
 
                 $this->addSuccessMessage('Vítejte zpět na Futurflixu, ' . $_SESSION['user_name'] . '!');
                 header('Location: ' . BASE_URL . '/index.php');

@@ -59,7 +59,8 @@ class VideoController extends Controller {
                 $genre, 
                 $release_year, 
                 $age_rating, 
-                $imageName 
+                $imageName, 
+                $_SESSION['user_id'] // <-- TOTO JE NOVÉ: Předáváme ID tvůrce
             );
             
             if ($isCreated) {
@@ -133,6 +134,17 @@ class VideoController extends Controller {
             exit;
         }
 
+        // 💡 ZMĚNA: Načtení práv ze Session
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+        $isAuthor = isset($_SESSION['user_id']) && isset($video['user_id']) && $video['user_id'] == $_SESSION['user_id'];
+
+        // 🛡️ ZMĚNA: Pokud uživatel není autor a zároveň není admin, vyhodíme ho
+        if (!$isAuthor && !$isAdmin) {
+            $this->addErrorMessage('Nemáš oprávnění upravovat toto video.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
         // Vytvoříme pro formulář novou položku 'youtube_url' složením základu a ID z databáze
         $video['youtube_url'] = "https://www.youtube.com/watch?v=" . $video['youtube_id'];
         require_once '../app/views/webpages/video_edit.php';
@@ -141,6 +153,26 @@ class VideoController extends Controller {
     public function update($id) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
+            // Načteme video, abychom zkontrolovali, komu patří
+            $videoModel = $this->getModel();
+            $video = $videoModel->getById($id);
+
+            if (!$video) {
+                $this->addErrorMessage('Video nebylo nalezeno.');
+                header('Location: ' . BASE_URL . '/index.php');
+                exit;
+            }
+
+            // 💡 ZMĚNA: Kontrola oprávnění před uložením úprav
+            $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+            $isAuthor = isset($_SESSION['user_id']) && isset($video['user_id']) && $video['user_id'] == $_SESSION['user_id'];
+
+            if (!$isAuthor && !$isAdmin) {
+                $this->addErrorMessage('Nemáš oprávnění upravovat toto video.');
+                header('Location: ' . BASE_URL . '/index.php');
+                exit;
+            }
+
             // 1. Zjistíme, jestli uživatel nahrál nový obrázek, nebo ponecháme starý
             $url = $_POST['youtube_url'];
             preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
@@ -224,6 +256,20 @@ class VideoController extends Controller {
 
         // Načteme info o videu kvůli smazání souboru
         $video = $videoModel->getById($id);
+
+        if (!$video) {
+            $this->addErrorMessage('Video nebylo nalezeno.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
+        // 💡 ZMĚNA: Ochrana proti neoprávněnému smazání
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+        if (!isset($_SESSION['user_id']) || ($video['user_id'] !== $_SESSION['user_id'] && !$isAdmin)) {
+            $this->addErrorMessage('Nemáš oprávnění smazat toto video.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
         
         if ($video && !empty($video['image'])) {
             $imagePath = __DIR__ . '/../../public/uploads/' . $video['image'];
@@ -244,5 +290,31 @@ class VideoController extends Controller {
         exit;
     }
 
+
+    // 6. Zobrazení profilu uživatele a jeho vlastních videí
+    public function profile() {
+        // 🛡️ Ochrana: Pokud uživatel není přihlášen, nepustíme ho sem
+        if (!isset($_SESSION['user_id'])) {
+            $this->addErrorMessage('Pro zobrazení profilu se musíš nejdříve přihlásit.');
+            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+            exit;
+        }
+
+        require_once '../app/models/Database.php';
+        require_once '../app/models/User.php';
+        require_once '../app/models/Video.php';
+        
+        $db = (new Database())->getConnection();
+        $userModel = new User($db);
+        $videoModel = new Video($db);
+
+        // Načteme kompletní info o uživateli (jméno, email, nickname...)
+        $user = $userModel->findById($_SESSION['user_id']);
+        // Načteme pouze videa tohoto konkrétního uživatele
+        $videos = $videoModel->getByUserId($_SESSION['user_id']);
+
+        // Načtení samotného vzhledu profilu
+        require_once '../app/views/webpages/my_profile.php';
+    }
 
 }

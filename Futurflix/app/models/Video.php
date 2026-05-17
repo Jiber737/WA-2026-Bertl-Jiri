@@ -27,10 +27,10 @@ class Video {
 
     // Vytvoření nového videa
 // Vytvoření nového videa
-    public function create($title, $youtube_id, $description, $genre, $release_year, $age_rating, $image) {
+    public function create($title, $youtube_id, $description, $genre, $release_year, $age_rating, $image, $user_id) {
         // Zde jsme změnili youtube_url na youtube_id, aby to sedělo s databází
-        $sql = "INSERT INTO videos (title, youtube_id, description, genre, release_year, age_rating, image) 
-                VALUES (:title, :youtube_id, :description, :genre, :release_year, :age_rating, :image)";
+        $sql = "INSERT INTO videos (title, youtube_id, description, genre, release_year, age_rating, image, user_id) 
+                VALUES (:title, :youtube_id, :description, :genre, :release_year, :age_rating, :image, :user_id)";
         
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
@@ -40,7 +40,8 @@ class Video {
             ':genre'        => $genre,
             ':release_year' => $release_year,
             ':age_rating'   => $age_rating,
-            ':image'        => $image
+            ':image'        => $image,
+            ':user_id'      => $user_id // <-- Tady ukládáme tvůrce
         ]);
     }
 
@@ -75,5 +76,13 @@ class Video {
         $sql = "DELETE FROM videos WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute(['id' => $id]);
+    }
+
+    // Získání všech videí nahraných konkrétním uživatelem
+    public function getByUserId($userId) {
+        $sql = "SELECT * FROM videos WHERE user_id = :user_id ORDER BY id DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['user_id' => $userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
