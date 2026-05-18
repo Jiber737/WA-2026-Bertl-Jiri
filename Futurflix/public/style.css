@@ -474,6 +474,131 @@ h1 {
 }
 
 
+
+
+
+/* --- SEKCE KOMENTÁŘŮ U VIDEA --- */
+
+.comments-section {
+    margin-top: 50px;
+    border-top: 1px solid #333;
+    padding-top: 30px;
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-family: 'BurbankBigCity', sans-serif;
+    color: var(--text-white);
+    letter-spacing: 1px;
+}
+
+/* Formulář pro přidání komentáře */
+.comment-form {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.comment-input {
+    flex: 1; /* Roztáhne input na zbytek dostupného místa */
+    padding: 12px 15px;
+}
+
+.comment-submit {
+    padding: 12px 25px;
+}
+
+/* Hláška pro nepřihlášené */
+.comment-login-prompt {
+    color: var(--text-grey);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.comment-login-prompt a {
+    color: var(--flix-red);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.comment-login-prompt a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Seznam komentářů */
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment-empty {
+    color: var(--text-grey);
+    font-style: italic;
+}
+
+/* Jednotlivý komentář */
+.comment-box {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 3px solid var(--text-grey); /* Neutrální čára na boku */
+    position: relative;
+    transition: border-color 0.3s ease;
+}
+
+.comment-box:hover {
+    border-color: var(--flix-red); /* Při najetí se postranní čára zabarví červeně */
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: var(--text-white);
+    font-size: 1.1rem;
+}
+
+.comment-date {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.comment-text {
+    color: var(--text-grey);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Tlačítko pro smazání komentáře */
+.comment-delete-btn {
+    position: absolute;
+    top: 15px;
+    right: -30px; /* Bude kousek vedle samotného boxu komentáře */
+    color: var(--flix-red);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.comment-delete-btn:hover {
+    transform: scale(1.2);
+    color: #ff1f1f;
+}
+
+
+
+
+
 /* --- FORMULÁŘE (Přidání videa atd.) --- */
 
 /* Hlavní box formuláře */

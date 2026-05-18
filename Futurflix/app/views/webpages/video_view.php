@@ -40,6 +40,52 @@
                     </p>
                 </div>
 
+                <div class="comments-section">
+                    <h2 class="comments-title">Komentáře (<?= count($data['comments']) ?>)</h2>
+
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <form action="<?= BASE_URL ?>/index.php?url=comment/store" method="POST" class="comment-form">
+                            <input type="hidden" name="video_id" value="<?= $data['video']['id'] ?>">
+                            <input type="text" name="content" class="form-control comment-input" placeholder="Přidej veřejný komentář..." required>
+                            <button type="submit" class="btn-contest comment-submit">Odeslat</button>
+                        </form>
+                    <?php else: ?>
+                        <p class="comment-login-prompt">
+                            Pro přidání komentáře se musíš <a href="<?= BASE_URL ?>/index.php?url=auth/login">přihlásit</a>.
+                        </p>
+                    <?php endif; ?>
+
+                    <div class="comments-list">
+                        <?php if (empty($data['comments'])): ?>
+                            <p class="comment-empty">Zatím zde nejsou žádné komentáře. Buď první!</p>
+                        <?php else: ?>
+                            <?php foreach ($data['comments'] as $comment): ?>
+                                <div class="comment-box">
+                                    <div class="comment-header">
+                                        <span class="comment-author">
+                                            <?= htmlspecialchars($comment['nickname'] ?: $comment['username']) ?>
+                                        </span>
+                                        <span class="comment-date">
+                                            <?= date('d.m.Y H:i', strtotime($comment['created_at'])) ?>
+                                        </span>
+                                    </div>
+                                    <p class="comment-text">
+                                        <?= nl2br(htmlspecialchars($comment['content'])) ?>
+                                    </p>
+
+                                    <?php 
+                                    $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+                                    $isAuthor = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment['user_id'];
+                                    if ($isAuthor || $isAdmin): 
+                                    ?>
+                                        <a href="<?= BASE_URL ?>/index.php?url=comment/delete/<?= $comment['id'] ?>" class="comment-delete-btn" onclick="return confirm('Opravdu smazat tento komentář?')" title="Smazat komentář">✖</a>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
                 <div class="video-actions-footer">
                     <a href="<?= BASE_URL ?>/index.php" class="btn-back">
                         <span class="arrow">←</span> ZPĚT DO KNIHOVNY

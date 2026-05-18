@@ -222,10 +222,12 @@ class VideoController extends Controller {
 
         require_once '../app/models/Database.php';
         require_once '../app/models/Video.php';
+        require_once '../app/models/Comment.php'; //Načteme i model komentářů
 
         $database = new Database();
         $db = $database->getConnection();
         $videoModel = new Video($db);
+        $commentModel = new Comment($db); //Instance komentářů
         
         // Načtení dat o videu podle ID
         $video = $videoModel->getById($id);
@@ -234,8 +236,14 @@ class VideoController extends Controller {
             die("Video nebylo nalezeno.");
         }
 
-        // Předání dat do view (předáváme pole s klíčem 'video')
-        $data = ['video' => $video];
+        // 💡 ZMĚNA: Načtení komentářů k tomuto videu
+        $comments = $commentModel->getByVideoId($id);
+
+        // 💡 ZMĚNA: Předání obou proměnných do view
+        $data = [
+            'video' => $video,
+            'comments' => $comments
+        ];
         require_once '../app/views/webpages/video_view.php';
     }
 
