@@ -9,20 +9,49 @@
     <?php require_once __DIR__ . '/../layout/header.php'; ?>
 
     <main>
+        <?php 
+        // Vytáhneme nejnovější video
+        if (!empty($videos)): 
+            $featured = $videos[0]; 
+        ?>
         <section class="hero-banner">
+            
+            <?php if(!empty($featured['image'])): ?>
+                <img src="<?= BASE_URL ?>/uploads/<?= htmlspecialchars($featured['image']) ?>" alt="Žhavá novinka" class="hero-bg-img">
+            <?php else: ?>
+                <div class="hero-bg-placeholder"></div>
+            <?php endif; ?>
+            
+            <div class="hero-fade-overlay"></div>
+
             <div class="hero-content">
-                <span class="hero-badge">PREMIÉRA</span>
-                <h1>FUTURFLIX ORIGINALS</h1>
-                <p>Sleduj nejnovější pecky od naší komunity. Kvalita, která tě nenechá spát.</p>
-                <div class="hero-actions">
-                    <button class="btn-contest">PŘEHRÁT POSLEDNÍ</button>
-                    <div class="view-toggle">
-                        <button class="toggle-btn active" title="Mřížka">⊞</button>
-                        <button class="toggle-btn" title="Seznam">≡</button>
-                    </div>
+                <div class="hero-badges-row">
+                    <span class="hero-badge">ŽHAVÁ NOVINKA</span>
+                    <span class="hero-clickbait">🔥 OD OSCAROVÉHO REŽISÉRA</span>
                 </div>
+                
+                <h1 class="hero-featured-title"><?= htmlspecialchars($featured['title']) ?></h1>
+                
+                <div class="hero-video-info-bar">
+                    <span class="age-tag"><?= htmlspecialchars($featured['age_rating'] ?? '12+') ?></span>
+                    <span class="hero-info-item"><?= htmlspecialchars($featured['genre'] ?? 'Film') ?></span>
+                    <span class="hero-info-separator">•</span>
+                    <span class="hero-info-item"><?= htmlspecialchars($featured['release_year']) ?></span>
+                </div>
+                
+                <p class="hero-featured-description">
+                    <?= htmlspecialchars($featured['description']) ?>
+                </p>
             </div>
+
+            <div class="hero-play-bottom-right">
+                <a href="<?= BASE_URL ?>/index.php?url=video/show/<?= $featured['id'] ?>" class="btn-contest hero-play-link">
+                    PŘEHRÁT NYNÍ ▶
+                </a>
+            </div>
+
         </section>
+        <?php endif; ?>
 
         <section class="video-grid">
             <?php if (empty($videos)): ?>

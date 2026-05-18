@@ -148,63 +148,149 @@ h1 {
     margin-bottom: 10px;
 }
 
-/* --- HERO BANNER --- */
+
+
+
+
+
+
+
+
+
+
+
+/* --- HERO BANNER (CELOOBRAZOVKOVÁ FOTKA S PŘECHODEM) --- */
+
 .hero-banner {
-    /* Výška a pozadí s tmavým přechodem, aby šel číst text */
-    min-height: 400px;
-    background: linear-gradient(90deg, rgba(20,20,20,1) 0%, rgba(20,20,20,0.8) 40%, rgba(20,20,20,0) 100%), #1a1a1a;
+    position: relative;
+    min-height: 550px; /* Pořádná výška banneru */
     border-radius: 12px;
-    margin-bottom: 50px; /* Odskočení od videí pod bannerem */
-    display: flex;
-    align-items: center; /* Vycentrování obsahu na střed výšky */
-    padding: 40px 5%; /* Odsazení od okrajů */
+    margin-bottom: 60px;
+    overflow: hidden; /* Aby podkladový obrázek nevylezl z kulatých rohů */
     border: 1px solid #333;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center; /* Vycentruje text vertikálně */
+    padding: 40px 5%;
 }
 
+/* VRSTVA 1: Samotný obrázek na pozadí */
+.hero-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Roztáhne obrázek bez deformace */
+    z-index: 1;
+}
+
+.hero-bg-placeholder {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #1a1a1a;
+    z-index: 1;
+}
+
+/* VRSTVA 2: Černý přechod (fade) zleva doprava */
+.hero-fade-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Od 100% černé vlevo po naprostou průhlednost vpravo */
+    background: linear-gradient(90deg, rgba(20,20,20,0.95) 0%, rgba(20,20,20,0.85) 40%, rgba(20,20,20,0) 100%);
+    z-index: 2;
+}
+
+/* VRSTVA 3: Levý blok s textem */
 .hero-content {
-    max-width: 600px; /* Aby text nešel přes celou obrazovku */
+    position: relative;
+    z-index: 3; /* Nad obrázkem i přechodem */
+    max-width: 600px; /* Aby text nešel doprava přes světlou část fotky */
     display: flex;
     flex-direction: column;
-    gap: 18px; /* TADY JE KOUZLO: Udělá dokonalé a stejné mezery mezi nadpisem, textem a tlačítky */
+    gap: 15px;
 }
 
-/* Malý štítek "PREMIÉRA" */
-.hero-badge {
-    background-color: rgba(229, 9, 20, 0.15); /* Poloprůhledná tvoje červená */
-    color: var(--flix-red);
-    border: 1px solid var(--flix-red);
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    width: fit-content; /* Aby nebyl roztažený přes celou šířku */
-}
-
-.hero-content h1 {
-    font-size: 3.5rem;
-    margin: 0; /* Marginy vypínáme, protože používáme "gap" nahoře */
-    color: white;
-    font-family: 'BurbankBigCity', sans-serif;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-    line-height: 1.1;
-}
-
-.hero-content p {
-    font-size: 1.15rem;
-    color: var(--text-grey);
-    margin: 0;
-    line-height: 1.5;
-}
-
-/* Řádek s tlačítky (Přehrát + Přepínače zobrazení) */
-.hero-actions {
+.hero-badges-row {
     display: flex;
     align-items: center;
-    gap: 25px; /* Mezera mezi červeným tlačítkem a těmi malými ikonkami */
-    margin-top: 10px;
+    gap: 15px;
 }
+
+.hero-clickbait {
+    color: #ffcc00;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.hero-featured-title {
+    font-size: 4rem;
+    color: var(--text-white);
+    font-family: 'BurbankBigCity', sans-serif;
+    line-height: 1.1;
+    text-shadow: 2px 4px 10px rgba(0,0,0,0.9);
+    margin: 0;
+}
+
+.hero-video-info-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #d1d1d1;
+    font-size: 0.95rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.hero-info-separator {
+    color: var(--flix-red);
+    font-weight: bold;
+}
+
+.hero-featured-description {
+    font-size: 1.15rem;
+    color: #e5e5e5;
+    line-height: 1.6;
+    margin: 0;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.9);
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Ořízne text, pokud by byl extrémně dlouhý */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* VRSTVA 4: Tlačítko Přehrát (Vpravo dole) */
+.hero-play-bottom-right {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    z-index: 4; /* Maximální priorita, aby šlo vždy kliknout */
+}
+
+.hero-play-link {
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 15px 35px;
+    box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); /* Svítivý červený stín pod tlačítkem */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Obal pro ikonky Mřížka/Seznam */
 .view-toggle {
